@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import org.hibernate.annotations.Comment;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
+import org.hibernate.id.uuid.UuidGenerator;
 
 import java.time.LocalDateTime;
 
@@ -11,7 +12,7 @@ import java.time.LocalDateTime;
 @Table(name = "sys_area")
 @GenericGenerator(
         name = "jpa-uuid",
-        strategy = "org.hibernate.id.UUIDGenerator",
+        type = UuidGenerator.class,
         parameters = {@Parameter(name = "uuid_gen_strategy_class", value = "org.hibernate.id.uuid.CustomVersionOneStrategy")}
 )
 public class SysArea {
