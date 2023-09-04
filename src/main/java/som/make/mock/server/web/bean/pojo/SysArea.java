@@ -2,19 +2,12 @@ package som.make.mock.server.web.bean.pojo;
 
 import jakarta.persistence.*;
 import org.hibernate.annotations.Comment;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
-import org.hibernate.id.uuid.UuidGenerator;
+import org.hibernate.annotations.UuidGenerator;
 
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "sys_area")
-@GenericGenerator(
-        name = "jpa-uuid",
-        type = UuidGenerator.class,
-        parameters = {@Parameter(name = "uuid_gen_strategy_class", value = "org.hibernate.id.uuid.CustomVersionOneStrategy")}
-)
 public class SysArea {
 
     private String areaId;
@@ -38,7 +31,7 @@ public class SysArea {
     public Long updateUser;
 
     @Id
-    @GeneratedValue(generator = "jpa-uuid")
+    @UuidGenerator(style = UuidGenerator.Style.TIME)
     @Comment("区域id")
     public String getAreaId() {
         return areaId;
