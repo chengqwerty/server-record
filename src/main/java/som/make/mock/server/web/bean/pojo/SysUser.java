@@ -7,7 +7,6 @@ import org.hibernate.annotations.Comment;
 @Table(name = "sys_user")
 public class SysUser {
 
-
     private String userId;
 
     private String userName;
@@ -23,6 +22,7 @@ public class SysUser {
     @Id
     @GeneratedValue(generator = "jpa-uuid")
     @Comment("用户id")
+    @Column(length = 64)
     public String getUserId() {
         return userId;
     }

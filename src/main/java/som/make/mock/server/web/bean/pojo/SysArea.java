@@ -24,11 +24,11 @@ public class SysArea {
 
     public LocalDateTime createTime;
 
-    public Long createUser;
+    public String createUser;
 
     public LocalDateTime updateTime;
 
-    public Long updateUser;
+    public String updateUser;
 
     @Id
     @UuidGenerator(style = UuidGenerator.Style.TIME)
@@ -101,13 +101,13 @@ public class SysArea {
         this.createTime = createTime;
     }
 
-    @Column
+    @Column(length = 64)
     @Comment("创建人")
-    public Long getCreateUser() {
+    public String getCreateUser() {
         return createUser;
     }
 
-    public void setCreateUser(Long createUser) {
+    public void setCreateUser(String createUser) {
         this.createUser = createUser;
     }
 
@@ -121,13 +121,13 @@ public class SysArea {
         this.updateTime = updateTime;
     }
 
-    @Column
+    @Column(length = 64)
     @Comment("修改人")
-    public Long getUpdateUser() {
+    public String getUpdateUser() {
         return updateUser;
     }
 
-    public void setUpdateUser(Long updateUser) {
+    public void setUpdateUser(String updateUser) {
         this.updateUser = updateUser;
     }
 }
