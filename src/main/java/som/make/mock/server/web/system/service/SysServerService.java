@@ -1,7 +1,7 @@
 package som.make.mock.server.web.system.service;
 
 import org.springframework.stereotype.Service;
-import som.make.mock.server.web.system.pojo.SysServer;
+import som.make.mock.server.web.system.bean.SysServer;
 import som.make.mock.server.web.system.dao.SysServerDao;
 
 import java.sql.Timestamp;

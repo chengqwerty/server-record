@@ -1,7 +1,7 @@
 package som.make.mock.server.web.system.controller;
 
 import org.springframework.web.bind.annotation.*;
-import som.make.mock.server.web.system.pojo.SysArea;
+import som.make.mock.server.web.system.bean.SysArea;
 import som.make.mock.server.common.express.ExpressException;
 import som.make.mock.server.common.ResultBean;
 import som.make.mock.server.web.system.service.SysAreaService;

@@ -1,4 +1,4 @@
-package som.make.mock.server.web.system.pojo;
+package som.make.mock.server.web.system.bean;
 
 import jakarta.persistence.*;
 import org.hibernate.annotations.Comment;
@@ -6,14 +6,16 @@ import org.hibernate.annotations.Comment;
 import java.sql.Timestamp;
 
 @Entity
-@Table(name = "sys_server_service_relation")
-public class SysServerServiceRelation {
+@Table(name = "sys_service")
+public class SysService {
 
-    private String ssjId;
+    private String serviceId;
 
-    private Long serverId;
+    private String serviceName;
 
-    private Long serviceId;
+    private String servicePath;
+
+    private String serviceDescription;
 
     private Timestamp createTime;
 
@@ -25,33 +27,43 @@ public class SysServerServiceRelation {
 
     @Id
     @GeneratedValue(generator = "jpa-uuid")
-    @Comment("id")
-    public String getSsjId() {
-        return ssjId;
-    }
-
-    public void setSsjId(String ssjId) {
-        this.ssjId = ssjId;
-    }
-
-    @Column
-    @Comment("服务器id")
-    public Long getServerId() {
-        return serverId;
-    }
-
-    public void setServerId(Long serverId) {
-        this.serverId = serverId;
-    }
-
-    @Column
     @Comment("服务id")
-    public Long getServiceId() {
+    public String getServiceId() {
         return serviceId;
     }
 
-    public void setServiceId(Long serviceId) {
+    public void setServiceId(String serviceId) {
         this.serviceId = serviceId;
+    }
+
+    @Column(length = 64)
+    @Comment("服务名称")
+    public String getServiceName() {
+        return serviceName;
+    }
+
+    public void setServiceName(String serviceName) {
+        this.serviceName = serviceName;
+    }
+
+    @Column(length = 128)
+    @Comment("服务器目录")
+    public String getServicePath() {
+        return servicePath;
+    }
+
+    public void setServicePath(String servicePath) {
+        this.servicePath = servicePath;
+    }
+
+    @Column(length = 256)
+    @Comment("服务描述")
+    public String getServiceDescription() {
+        return serviceDescription;
+    }
+
+    public void setServiceDescription(String serviceDescription) {
+        this.serviceDescription = serviceDescription;
     }
 
     @Column

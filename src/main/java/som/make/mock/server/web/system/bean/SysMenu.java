@@ -1,4 +1,4 @@
-package som.make.mock.server.web.system.pojo;
+package som.make.mock.server.web.system.bean;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -10,7 +10,7 @@ import org.hibernate.annotations.UuidGenerator;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "sys_area")
+@Table(name = "sys_menu")
 public class SysMenu {
 
     private String menuId;

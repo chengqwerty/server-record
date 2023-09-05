@@ -1,4 +1,4 @@
-package som.make.mock.server.web.system.pojo;
+package som.make.mock.server.web.system.bean;
 
 import jakarta.persistence.*;
 import org.hibernate.annotations.Comment;
