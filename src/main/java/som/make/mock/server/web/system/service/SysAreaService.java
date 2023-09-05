@@ -1,10 +1,10 @@
-package som.make.mock.server.web.service;
+package som.make.mock.server.web.system.service;
 
 import org.springframework.stereotype.Service;
-import som.make.mock.server.web.bean.pojo.SysArea;
-import som.make.mock.server.web.dao.SysAreaDao;
-import som.make.mock.server.web.extend.ExpressCode;
-import som.make.mock.server.web.extend.ExpressException;
+import som.make.mock.server.web.system.pojo.SysArea;
+import som.make.mock.server.web.system.dao.SysAreaDao;
+import som.make.mock.server.common.express.ExpressCode;
+import som.make.mock.server.common.express.ExpressException;
 
 import java.time.LocalDateTime;
 import java.util.List;

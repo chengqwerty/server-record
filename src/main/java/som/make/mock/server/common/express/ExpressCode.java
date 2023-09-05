@@ -1,4 +1,4 @@
-package som.make.mock.server.web.extend;
+package som.make.mock.server.common.express;
 
 public enum ExpressCode {
 

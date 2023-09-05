@@ -1,7 +1,10 @@
-package som.make.mock.server.web.extend;
+package som.make.mock.server.common;
 
 import java.io.Serializable;
 
+/**
+ * controller返回结果的统一封装
+ */
 public class ResultBean<T> implements Serializable {
 
     private static final long serialVersionUID = 199109285717L;
@@ -26,21 +29,15 @@ public class ResultBean<T> implements Serializable {
         this.data = data;
     }
 
-    public ResultBean(Throwable e) {
+    public ResultBean(int code, Throwable e) {
         super();
-        this.message = e.toString();
+        this.message = e.getMessage();
         this.code = UNKNOWN_EXCEPTION;
     }
 
     public ResultBean(int code, String message) {
         this.code = code;
         this.message = message;
-    }
-
-    public ResultBean(int code, String message, T data) {
-        this.code = code;
-        this.message = message;
-        this.data = data;
     }
 
     public String getMessage() {

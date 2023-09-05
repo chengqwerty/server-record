@@ -1,12 +1,12 @@
-package som.make.mock.server.web.controller;
+package som.make.mock.server.web.system.controller;
 
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import som.make.mock.server.web.bean.pojo.SysServer;
-import som.make.mock.server.web.extend.ResultBean;
-import som.make.mock.server.web.service.SysServerService;
+import som.make.mock.server.web.system.pojo.SysServer;
+import som.make.mock.server.common.ResultBean;
+import som.make.mock.server.web.system.service.SysServerService;
 
 @RestController
 @RequestMapping("sys/server")
