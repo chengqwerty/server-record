@@ -1,4 +1,4 @@
-package som.make.mock.server.config.filter;
+package som.make.mock.server.config.filter.security;
 
 import jakarta.servlet.*;
 import jakarta.servlet.http.HttpServletRequest;
