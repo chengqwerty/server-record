@@ -1,5 +1,6 @@
 package som.make.mock.server.common;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 /**
@@ -7,6 +8,7 @@ import java.io.Serializable;
  */
 public class ResultBean<T> implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = 199109285717L;
 
     public static final int NO_LOGIN = -1;

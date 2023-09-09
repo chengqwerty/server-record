@@ -1,4 +1,4 @@
-package som.make.mock.server.web.system.bean;
+package som.make.mock.server.web.system.entity;
 
 import jakarta.persistence.*;
 import org.hibernate.annotations.Comment;
@@ -22,13 +22,13 @@ public class SysArea {
 
     private String areaDescription;
 
-    public LocalDateTime createTime;
+    private LocalDateTime createTime;
 
-    public String createUser;
+    private String createUser;
 
-    public LocalDateTime updateTime;
+    private LocalDateTime updateTime;
 
-    public String updateUser;
+    private String updateUser;
 
     @Id
     @UuidGenerator(style = UuidGenerator.Style.TIME)

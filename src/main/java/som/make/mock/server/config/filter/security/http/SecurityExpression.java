@@ -1,8 +1,8 @@
 package som.make.mock.server.config.filter.security.http;
 
 import som.make.mock.server.core.security.Authentication;
-import som.make.mock.server.web.system.bean.SysRole;
-import som.make.mock.server.web.system.bean.SysUser;
+import som.make.mock.server.web.system.entity.SysRole;
+import som.make.mock.server.web.system.entity.SysUser;
 
 import java.util.Set;
 

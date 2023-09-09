@@ -1,26 +1,29 @@
-package som.make.mock.server.web.system.bean;
+package som.make.mock.server.web.system.entity;
 
 import jakarta.persistence.*;
 import org.hibernate.annotations.Comment;
+import org.hibernate.annotations.UuidGenerator;
+
+import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "sys_user")
 public class SysUser {
 
     private String userId;
-
     private String userName;
-
     private String loginName;
-
     private String nickname;
-
     private String password;
-
     private String status;
+    private LocalDateTime createTime;
+    private String createUser;
+    private LocalDateTime updateTime;
+    private String updateUser;
 
     @Id
-    @GeneratedValue(generator = "jpa-uuid")
+    @UuidGenerator(style = UuidGenerator.Style.TIME)
     @Comment("用户id")
     @Column(length = 64)
     public String getUserId() {
@@ -61,7 +64,7 @@ public class SysUser {
         this.nickname = nickname;
     }
 
-    @Column(length = 64)
+    @Column(length = 256)
     @Comment("密码")
     public String getPassword() {
         return password;
@@ -80,4 +83,45 @@ public class SysUser {
     public void setStatus(String status) {
         this.status = status;
     }
+
+    @Column
+    @Comment("创建时间")
+    public LocalDateTime getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(LocalDateTime createTime) {
+        this.createTime = createTime;
+    }
+
+    @Column(length = 64)
+    @Comment("创建人")
+    public String getCreateUser() {
+        return createUser;
+    }
+
+    public void setCreateUser(String createUser) {
+        this.createUser = createUser;
+    }
+
+    @Column
+    @Comment("修改时间")
+    public LocalDateTime getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(LocalDateTime updateTime) {
+        this.updateTime = updateTime;
+    }
+
+    @Column(length = 64)
+    @Comment("修改人")
+    public String getUpdateUser() {
+        return updateUser;
+    }
+
+    public void setUpdateUser(String updateUser) {
+        this.updateUser = updateUser;
+    }
+
 }

@@ -1,8 +1,12 @@
 package som.make.mock.server.common.express;
 
+/**
+ * 自定义异常编码
+ * 4000 系列是权限相关的异常
+ */
 public enum ExpressCode {
 
-    REPEAT("重复", 50001);
+    REPEAT("重复", 50001), USER_NOT_EXISTS("用户不存在", 4002), USER_LOGIN_ERROR("用户名或者密码错误", 4003);
 
     private String name;
     private int code;

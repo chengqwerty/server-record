@@ -1,7 +1,7 @@
 package som.make.mock.server.web.system.service;
 
 import org.springframework.stereotype.Service;
-import som.make.mock.server.web.system.bean.SysArea;
+import som.make.mock.server.web.system.entity.SysArea;
 import som.make.mock.server.web.system.dao.SysAreaDao;
 import som.make.mock.server.common.express.ExpressCode;
 import som.make.mock.server.common.express.ExpressException;

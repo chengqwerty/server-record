@@ -1,15 +1,22 @@
 package som.make.mock.server.core.security;
 
 import java.util.List;
+import java.util.Set;
 
 public class Authentication<A, B> {
 
+    private String token;
     private A principal;
     private List<B> roles;
+    private Set<String> authorities;
 
-    private List<String> authorities;
+    public String getToken() {
+        return token;
+    }
 
-    private boolean authenticated;
+    public void setToken(String token) {
+        this.token = token;
+    }
 
     public A getPrincipal() {
         return principal;
@@ -27,19 +34,12 @@ public class Authentication<A, B> {
         this.roles = roles;
     }
 
-    public List<String> getAuthorities() {
+    public Set<String> getAuthorities() {
         return authorities;
     }
 
-    public void setAuthorities(List<String> authorities) {
+    public void setAuthorities(Set<String> authorities) {
         this.authorities = authorities;
     }
 
-    public void setAuthenticated(boolean authenticated) {
-        this.authenticated = authenticated;
-    }
-
-    public boolean isAuthenticated() {
-        return authenticated;
-    }
 }

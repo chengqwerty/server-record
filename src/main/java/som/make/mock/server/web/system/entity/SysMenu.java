@@ -1,4 +1,4 @@
-package som.make.mock.server.web.system.bean;
+package som.make.mock.server.web.system.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
