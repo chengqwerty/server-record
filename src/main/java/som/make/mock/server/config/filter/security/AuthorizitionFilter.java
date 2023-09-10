@@ -29,6 +29,7 @@ public class AuthorizitionFilter implements Filter {
         System.out.println(httpServletRequest.getRequestURI());
         System.out.println(httpServletRequest.getRequestURL());
         System.out.println(httpServletRequest.getServletPath());
+        filterChain.doFilter(servletRequest, servletResponse);
     }
 
     @Override

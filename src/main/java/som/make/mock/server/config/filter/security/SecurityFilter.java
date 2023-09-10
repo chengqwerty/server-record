@@ -32,7 +32,7 @@ public class SecurityFilter implements Filter {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         System.out.println(((HttpServletRequest) servletRequest).getRequestURI());
         // antPathMatcher.match();
-
+        filterChain.doFilter(servletRequest, servletResponse);
     }
 
     @Override

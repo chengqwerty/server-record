@@ -39,9 +39,11 @@ public class AuthencationFilter implements Filter {
         // 1、验证是否登录，如果登录获取Authentication
         HttpServletRequest httpServletRequest = (HttpServletRequest) servletRequest;
         String token = httpServletRequest.getHeader("Token");
-        Authentication<SysUser, SysRole> authentication = tokenCache.getToken(token);
-        if (authentication != null) {
-            SecurityContextHolder.getContext().setAuthentication(authentication);
+        if (token != null) {
+            Authentication<SysUser, SysRole> authentication = tokenCache.getToken(token);
+            if (authentication != null) {
+                SecurityContextHolder.getContext().setAuthentication(authentication);
+            }
         }
         filterChain.doFilter(servletRequest, servletResponse);
     }
