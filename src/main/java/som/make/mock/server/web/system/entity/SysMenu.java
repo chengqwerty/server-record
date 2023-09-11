@@ -69,7 +69,7 @@ public class SysMenu {
     }
 
     @Column()
-    @Comment("菜单类型")
+    @Comment("菜单类型，0：菜单，1：目录")
     public Integer getMenuType() {
         return menuType;
     }
