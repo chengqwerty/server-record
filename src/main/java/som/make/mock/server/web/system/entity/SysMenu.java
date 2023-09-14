@@ -108,7 +108,7 @@ public class SysMenu {
         this.parentId = parentId;
     }
 
-    @Column(length = 64)
+    @Column()
     @Comment("是否可见")
     public Integer getMenuVisible() {
         return menuVisible;
