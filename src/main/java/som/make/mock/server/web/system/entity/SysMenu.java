@@ -4,8 +4,11 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotNull;
 import org.hibernate.annotations.Comment;
 import org.hibernate.annotations.UuidGenerator;
+import org.hibernate.validator.constraints.Length;
+import som.make.mock.server.common.validation.AddGroup;
 
 import java.time.LocalDateTime;
 
@@ -13,23 +16,53 @@ import java.time.LocalDateTime;
 @Table(name = "sys_menu")
 public class SysMenu {
 
-    private String menuId;
-    private String menuCode;
-    private String menuName;
-    private String menuDescription;
-    private Integer menuType;
-    private String menuLink;
-    private String menuIcon;
-    private String parentId;
-    private Integer menuVisible;
-    public LocalDateTime createTime;
-    public String createUser;
-    public LocalDateTime updateTime;
-    public String updateUser;
-
     @Id
     @UuidGenerator(style = UuidGenerator.Style.TIME)
     @Comment("菜单id")
+    private String menuId;
+    @Column(length = 64, unique = true)
+    @Comment("菜单编码")
+    @NotNull(groups = {AddGroup.class})
+    @Length(min = 4)
+    private String menuCode;
+    @Column(length = 64)
+    @Comment("菜单名称")
+    @NotNull(groups = {AddGroup.class})
+    private String menuName;
+    @Column(length = 256)
+    @Comment("菜单描述")
+    private String menuDescription;
+    @Column()
+    @Comment("菜单类型，0：菜单，1：目录")
+    @NotNull(groups = {AddGroup.class})
+    private Integer menuType;
+    @Column(length = 256)
+    @Comment("菜单地址")
+    private String menuLink;
+    @Column(length = 64)
+    @Comment("菜单图标")
+    private String menuIcon;
+    @Column(length = 64)
+    @Comment("parentId")
+    @NotNull(groups = {AddGroup.class})
+    private String parentId;
+    @Column()
+    @Comment("是否可见")
+    @NotNull(groups = {AddGroup.class})
+    private Integer menuVisible;
+    @Column()
+    @Comment("创建时间")
+    public LocalDateTime createTime;
+    @Column(length = 64)
+    @Comment("创建人")
+    public String createUser;
+    @Column()
+    @Comment("修改时间")
+    public LocalDateTime updateTime;
+    @Column(length = 64)
+    @Comment("修改人")
+    public String updateUser;
+
     public String getMenuId() {
         return menuId;
     }
@@ -38,8 +71,6 @@ public class SysMenu {
         this.menuId = menuId;
     }
 
-    @Column(length = 64, unique = true)
-    @Comment("菜单编码")
     public String getMenuCode() {
         return menuCode;
     }
@@ -48,8 +79,6 @@ public class SysMenu {
         this.menuCode = menuCode;
     }
 
-    @Column(length = 64)
-    @Comment("菜单名称")
     public String getMenuName() {
         return menuName;
     }
@@ -58,8 +87,6 @@ public class SysMenu {
         this.menuName = menuName;
     }
 
-    @Column(length = 256)
-    @Comment("菜单描述")
     public String getMenuDescription() {
         return menuDescription;
     }
@@ -68,8 +95,6 @@ public class SysMenu {
         this.menuDescription = menuDescription;
     }
 
-    @Column()
-    @Comment("菜单类型，0：菜单，1：目录")
     public Integer getMenuType() {
         return menuType;
     }
@@ -78,8 +103,6 @@ public class SysMenu {
         this.menuType = menuType;
     }
 
-    @Column(length = 256)
-    @Comment("菜单地址")
     public String getMenuLink() {
         return menuLink;
     }
@@ -88,8 +111,6 @@ public class SysMenu {
         this.menuLink = menuLink;
     }
 
-    @Column(length = 64)
-    @Comment("菜单图标")
     public String getMenuIcon() {
         return menuIcon;
     }
@@ -98,8 +119,6 @@ public class SysMenu {
         this.menuIcon = menuIcon;
     }
 
-    @Column(length = 64)
-    @Comment("parentId")
     public String getParentId() {
         return parentId;
     }
@@ -108,8 +127,6 @@ public class SysMenu {
         this.parentId = parentId;
     }
 
-    @Column()
-    @Comment("是否可见")
     public Integer getMenuVisible() {
         return menuVisible;
     }
@@ -118,8 +135,6 @@ public class SysMenu {
         this.menuVisible = menuVisible;
     }
 
-    @Column()
-    @Comment("创建时间")
     public LocalDateTime getCreateTime() {
         return createTime;
     }
@@ -128,8 +143,6 @@ public class SysMenu {
         this.createTime = createTime;
     }
 
-    @Column(length = 64)
-    @Comment("创建人")
     public String getCreateUser() {
         return createUser;
     }
@@ -138,8 +151,6 @@ public class SysMenu {
         this.createUser = createUser;
     }
 
-    @Column()
-    @Comment("修改时间")
     public LocalDateTime getUpdateTime() {
         return updateTime;
     }
@@ -148,8 +159,6 @@ public class SysMenu {
         this.updateTime = updateTime;
     }
 
-    @Column(length = 64)
-    @Comment("修改人")
     public String getUpdateUser() {
         return updateUser;
     }
