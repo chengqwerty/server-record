@@ -9,6 +9,11 @@ public class ExpressException extends Exception {
         this.code = code;
     }
 
+    public ExpressException(ExpressCode expressCode) {
+        super(expressCode.getName());
+        this.code = expressCode.getCode();
+    }
+
     public int getCode() {
         return code;
     }

@@ -2,6 +2,7 @@ package som.make.mock.server.web.system.controller;
 
 import org.springframework.web.bind.annotation.*;
 import som.make.mock.server.common.ResultBean;
+import som.make.mock.server.common.express.ExpressException;
 import som.make.mock.server.web.system.entity.SysMenu;
 import som.make.mock.server.web.system.service.SysMenuService;
 
@@ -26,11 +27,19 @@ public class SysMenuController {
     }
 
     /**
-     * 根据parentId查询菜单
+     * 添加菜单
      */
     @PostMapping("add")
     public ResultBean<String> addMenu(@RequestBody SysMenu sysMenu) {
         return new ResultBean<>(sysMenuService.addMenu(sysMenu));
+    }
+
+    /**
+     * 修改菜单
+     */
+    @PostMapping("update")
+    public ResultBean<Integer> updateMenu(@RequestBody SysMenu sysMenu) throws ExpressException {
+        return new ResultBean<>(sysMenuService.updateMenu(sysMenu));
     }
 
 }
