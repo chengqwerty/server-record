@@ -7,10 +7,12 @@ import org.springframework.stereotype.Service;
 import som.make.mock.server.common.express.ExpressCode;
 import som.make.mock.server.common.express.ExpressException;
 import som.make.mock.server.config.cache.TokenCache;
+import som.make.mock.server.config.cache.TokenDetails;
 import som.make.mock.server.config.filter.auth.PasswordEncoder;
 import som.make.mock.server.core.security.Authentication;
 import som.make.mock.server.extend.UuidUtils;
 import som.make.mock.server.web.auth.entity.SysUserLoginDto;
+import som.make.mock.server.web.auth.entity.TokenModel;
 import som.make.mock.server.web.system.dao.SysRolePermDao;
 import som.make.mock.server.web.system.dao.SysUserDao;
 import som.make.mock.server.web.system.dao.SysUserRoleDao;
@@ -39,12 +41,13 @@ public class SysAuthService {
         this.sysRolePermDao = sysRolePermDao;
     }
 
-    public String login(SysUserLoginDto sysUserLoginDto) throws ExpressException {
+    public TokenModel login(SysUserLoginDto sysUserLoginDto) throws ExpressException {
         Optional<SysUser> optionalSysUser = sysUserDao.findByLoginName(sysUserLoginDto.getLoginName());
         if (optionalSysUser.isPresent()) {
             SysUser sysUser = optionalSysUser.get();
             if (passwordEncoder.matches(sysUserLoginDto.getPassword(), sysUser.getPassword())) {
                 String token = Base64.encodeBase64String(UuidUtils.simpleUuid().getBytes(StandardCharsets.UTF_8));
+                String refreshToken = passwordEncoder.encoder(token);
                 List<SysUserRole> sysUserRoleList = sysUserRoleDao.findAllByUserId(sysUser.getUserId());
                 Set<SysRole> sysRoleSet = new HashSet<>();
                 Set<String> roleIdSet = new HashSet<>();
@@ -60,8 +63,11 @@ public class SysAuthService {
                 authentication.setPrincipal(sysUser);
                 authentication.setRoles(sysRoleSet);
                 authentication.setAuthorities(permSet);
-                tokenCache.putToken(token, authentication);
-                return token;
+                TokenModel tokenModel = new TokenModel(token, refreshToken);
+                TokenDetails tokenDetails = new TokenDetails(token, refreshToken, 0, authentication);
+                tokenCache.putToken(token, tokenDetails);
+                tokenCache.putToken(refreshToken, tokenDetails);
+                return tokenModel;
             } else {
                 throw new ExpressException(ExpressCode.USER_LOGIN_ERROR.getName(), ExpressCode.USER_LOGIN_ERROR.getCode());
             }

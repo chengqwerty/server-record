@@ -4,6 +4,7 @@ import org.springframework.web.bind.annotation.*;
 import som.make.mock.server.common.ResultBean;
 import som.make.mock.server.common.express.ExpressException;
 import som.make.mock.server.web.auth.entity.SysUserLoginDto;
+import som.make.mock.server.web.auth.entity.TokenModel;
 import som.make.mock.server.web.auth.service.SysAuthService;
 
 @RequestMapping("auth")
@@ -17,7 +18,7 @@ public class SysAuthController {
     }
 
     @PostMapping("userLogin")
-    public ResultBean<String> userLogin(@RequestBody SysUserLoginDto sysUserLoginDto) throws ExpressException {
+    public ResultBean<TokenModel> userLogin(@RequestBody SysUserLoginDto sysUserLoginDto) throws ExpressException {
         return new ResultBean<>(sysAuthService.login(sysUserLoginDto));
     }
 

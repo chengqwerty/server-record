@@ -6,7 +6,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Component;
-import org.springframework.util.AntPathMatcher;
 import som.make.mock.server.config.filter.security.http.HttpSecurity;
 import som.make.mock.server.config.filter.security.http.WebSecurityExpression;
 import som.make.mock.server.core.security.SecurityContextHolder;
@@ -16,11 +15,11 @@ import java.util.List;
 
 @Component
 @Order(30)
-public class AuthorizitionFilter implements Filter {
+public class AuthorizationFilter implements Filter {
 
     private final HttpSecurity httpSecurity;
 
-    public AuthorizitionFilter(WebSecurityConfig webSecurityConfig) {
+    public AuthorizationFilter(WebSecurityConfig webSecurityConfig) {
         this.httpSecurity = webSecurityConfig.getHttpSecurity();
     }
 

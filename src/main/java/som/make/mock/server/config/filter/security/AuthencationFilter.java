@@ -5,6 +5,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 import som.make.mock.server.config.cache.TokenCache;
+import som.make.mock.server.config.cache.TokenDetails;
 import som.make.mock.server.config.filter.security.http.HttpSecurity;
 import som.make.mock.server.core.security.Authentication;
 import som.make.mock.server.core.security.SecurityContextHolder;
@@ -41,8 +42,9 @@ public class AuthencationFilter implements Filter {
         HttpServletRequest httpServletRequest = (HttpServletRequest) servletRequest;
         String token = httpServletRequest.getHeader("Authorization-Token");
         if (token != null) {
-            Authentication<SysUser, SysRole> authentication = tokenCache.getToken(token);
-            if (authentication != null) {
+            TokenDetails tokenDetail = tokenCache.getToken(token);
+            if (tokenDetail != null) {
+                Authentication<SysUser, SysRole> authentication = tokenDetail.getAuthentication();
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             }
         }

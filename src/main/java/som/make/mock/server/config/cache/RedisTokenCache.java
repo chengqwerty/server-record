@@ -1,9 +1,6 @@
 package som.make.mock.server.config.cache;
 
 import org.springframework.data.redis.core.RedisTemplate;
-import som.make.mock.server.core.security.Authentication;
-import som.make.mock.server.web.system.entity.SysRole;
-import som.make.mock.server.web.system.entity.SysUser;
 
 public class RedisTokenCache implements TokenCache {
 
@@ -14,13 +11,13 @@ public class RedisTokenCache implements TokenCache {
     }
 
     @Override
-    public void putToken(String token, Authentication<SysUser, SysRole> authentication) {
-        redisTemplate.opsForValue().set(token, authentication);
+    public void putToken(String token, TokenDetails tokenDetails) {
+        redisTemplate.opsForValue().set(token, tokenDetails);
     }
 
     @Override
-    public Authentication<SysUser, SysRole> getToken(String token) {
-        return (Authentication<SysUser, SysRole>) redisTemplate.opsForValue().get(token);
+    public TokenDetails getToken(String token) {
+        return (TokenDetails) redisTemplate.opsForValue().get(token);
     }
 
 }

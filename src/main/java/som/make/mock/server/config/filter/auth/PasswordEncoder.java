@@ -12,7 +12,7 @@ public class PasswordEncoder {
         this.argon2PasswordEncoder = new Argon2PasswordEncoder(32, 64, 1,15*1024,2);
     }
 
-    public String passwordEncoder(String password) {
+    public String encoder(String password) {
         return argon2PasswordEncoder.encode(password);
     }
 
