@@ -46,10 +46,10 @@ public class SysAuthService {
             if (passwordEncoder.matches(sysUserLoginDto.getPassword(), sysUser.getPassword())) {
                 String token = Base64.encodeBase64String(UuidUtils.simpleUuid().getBytes(StandardCharsets.UTF_8));
                 List<SysUserRole> sysUserRoleList = sysUserRoleDao.findAllByUserId(sysUser.getUserId());
-                List<SysRole> sysRoleList = new ArrayList<>();
+                Set<SysRole> sysRoleSet = new HashSet<>();
                 Set<String> roleIdSet = new HashSet<>();
                 sysUserRoleList.forEach(sysUserRole -> {
-                    sysRoleList.add(sysUserRole.getSysRole());
+                    sysRoleSet.add(sysUserRole.getSysRole());
                     roleIdSet.add(sysUserRole.getSysRole().getRoleId());
                 });
                 Set<String> permSet = new HashSet<>();
@@ -58,7 +58,7 @@ public class SysAuthService {
                 Authentication<SysUser, SysRole> authentication = new Authentication<>();
                 authentication.setToken(token);
                 authentication.setPrincipal(sysUser);
-                authentication.setRoles(sysRoleList);
+                authentication.setRoles(sysRoleSet);
                 authentication.setAuthorities(permSet);
                 tokenCache.putToken(token, authentication);
                 return token;

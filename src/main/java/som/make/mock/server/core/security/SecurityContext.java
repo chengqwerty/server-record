@@ -5,7 +5,7 @@ import som.make.mock.server.web.system.entity.SysUser;
 
 public class SecurityContext {
 
-    private Authentication<SysUser, SysRole> authentication;
+    private Authentication<SysUser, SysRole> authentication = null;
 
     public Authentication<SysUser, SysRole> getAuthentication() {
         return authentication;

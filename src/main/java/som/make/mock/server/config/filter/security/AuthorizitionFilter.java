@@ -2,11 +2,17 @@ package som.make.mock.server.config.filter.security;
 
 import jakarta.servlet.*;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.core.annotation.Order;
+import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Component;
+import org.springframework.util.AntPathMatcher;
 import som.make.mock.server.config.filter.security.http.HttpSecurity;
+import som.make.mock.server.config.filter.security.http.WebSecurityExpression;
+import som.make.mock.server.core.security.SecurityContextHolder;
 
 import java.io.IOException;
+import java.util.List;
 
 @Component
 @Order(30)
@@ -26,9 +32,24 @@ public class AuthorizitionFilter implements Filter {
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         HttpServletRequest httpServletRequest = (HttpServletRequest) servletRequest;
-        System.out.println(httpServletRequest.getRequestURI());
-        System.out.println(httpServletRequest.getRequestURL());
-        System.out.println(httpServletRequest.getServletPath());
+        if (!httpServletRequest.getMethod().equals(HttpMethod.OPTIONS.name())) {
+            List<HttpSecurity.AuthorizedUrl> authorizedUrlList = httpSecurity.getAuthorizedUrlList();
+            String servletPath = httpServletRequest.getServletPath();
+            WebSecurityExpression webSecurityExpression = new WebSecurityExpression(SecurityContextHolder.getContext().getAuthentication());
+            for (HttpSecurity.AuthorizedUrl authorizedUrl: authorizedUrlList) {
+                String pattern = authorizedUrl.getPathPattern(servletPath);
+                if (pattern != null) {
+                    if (!webSecurityExpression.verifyPermissions(pattern)) {
+                        // 如果是没有登录，执行onAuthenticationFailure，如果是没有权限，执行onAuthorizationFailure
+                        if (SecurityContextHolder.getContext().getAuthentication() == null) {
+                            httpSecurity.getFailureHandler().onAuthenticationFailure((HttpServletRequest) servletRequest, (HttpServletResponse) servletResponse);
+                        } else {
+                            httpSecurity.getFailureHandler().onAuthorizationFailure((HttpServletRequest) servletRequest, (HttpServletResponse) servletResponse);
+                        }
+                    }
+                }
+            }
+        }
         filterChain.doFilter(servletRequest, servletResponse);
     }
 

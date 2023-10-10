@@ -36,9 +36,10 @@ public class AuthencationFilter implements Filter {
      */
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
-        // 1、验证是否登录，如果登录获取Authentication
+        // 1、先删除之前的认证信息，验证是否登录，如果登录获取Authentication
+        SecurityContextHolder.clearContext();
         HttpServletRequest httpServletRequest = (HttpServletRequest) servletRequest;
-        String token = httpServletRequest.getHeader("Token");
+        String token = httpServletRequest.getHeader("Authorization-Token");
         if (token != null) {
             Authentication<SysUser, SysRole> authentication = tokenCache.getToken(token);
             if (authentication != null) {

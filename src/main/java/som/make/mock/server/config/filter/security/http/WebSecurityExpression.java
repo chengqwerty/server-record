@@ -6,6 +6,9 @@ import som.make.mock.server.core.security.Authentication;
 import som.make.mock.server.web.system.entity.SysRole;
 import som.make.mock.server.web.system.entity.SysUser;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+
 public class WebSecurityExpression {
 
     private final SecurityExpression securityExpression;
@@ -15,7 +18,15 @@ public class WebSecurityExpression {
     public WebSecurityExpression(Authentication<SysUser, SysRole> authentication) {
         this.securityExpression = new SecurityExpression(authentication);
         standardEvaluationContext.setRootObject(this.securityExpression);
-        Object value = spelExpressionParser.parseExpression("hasRole('abc')").getValue(this.securityExpression);
-        System.out.println(value);
     }
+
+    public boolean verifyPermissions(String pattern) {
+        Object value = spelExpressionParser.parseExpression(pattern).getValue(standardEvaluationContext);
+        if (value != null) {
+            return (boolean) value;
+        } else {
+            return false;
+        }
+    }
+
 }

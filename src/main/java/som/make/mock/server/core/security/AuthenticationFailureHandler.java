@@ -10,4 +10,6 @@ public interface AuthenticationFailureHandler {
 
     void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException;
 
+    void onAuthorizationFailure(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException;
+
 }
