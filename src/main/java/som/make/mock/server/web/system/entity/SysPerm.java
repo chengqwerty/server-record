@@ -13,17 +13,39 @@ import java.time.LocalDateTime;
 @Table(name = "sys_perm")
 public class SysPerm {
 
-    private String permId;
-    private String permCode;
-    private String permName;
-    private LocalDateTime createTime;
-    private String createUser;
-    private LocalDateTime updateTime;
-    private String updateUser;
-
     @Id
+    @Column(name = "perm_id")
     @UuidGenerator(style = UuidGenerator.Style.TIME)
     @Comment("权限主键")
+    private String permId;
+    @Column(length = 64, unique = true)
+    @Comment("权限编码")
+    private String permCode;
+    @Column(length = 128)
+    @Comment("权限名称")
+    private String permName;
+    @Column(length = 512)
+    @Comment("权限描述")
+    private String permDescription;
+    @Column(length = 512)
+    @Comment("权限类型")
+    private Integer permType;
+    @Column(length = 512)
+    @Comment("权限类型")
+    private String parentId;
+    @Column
+    @Comment("创建时间")
+    private LocalDateTime createTime;
+    @Column(length = 64)
+    @Comment("创建人")
+    private String createUser;
+    @Column
+    @Comment("修改时间")
+    private LocalDateTime updateTime;
+    @Column(length = 64)
+    @Comment("修改人")
+    private String updateUser;
+
     public String getPermId() {
         return permId;
     }
@@ -32,8 +54,6 @@ public class SysPerm {
         this.permId = permId;
     }
 
-    @Column(length = 64, unique = true)
-    @Comment("权限编码")
     public String getPermCode() {
         return permCode;
     }
@@ -42,8 +62,6 @@ public class SysPerm {
         this.permCode = permCode;
     }
 
-    @Column(length = 128)
-    @Comment("权限名称")
     public String getPermName() {
         return permName;
     }
@@ -52,8 +70,6 @@ public class SysPerm {
         this.permName = permName;
     }
 
-    @Column
-    @Comment("创建时间")
     public LocalDateTime getCreateTime() {
         return createTime;
     }
@@ -62,8 +78,6 @@ public class SysPerm {
         this.createTime = createTime;
     }
 
-    @Column(length = 64)
-    @Comment("创建人")
     public String getCreateUser() {
         return createUser;
     }
@@ -72,8 +86,6 @@ public class SysPerm {
         this.createUser = createUser;
     }
 
-    @Column
-    @Comment("修改时间")
     public LocalDateTime getUpdateTime() {
         return updateTime;
     }
@@ -82,8 +94,6 @@ public class SysPerm {
         this.updateTime = updateTime;
     }
 
-    @Column(length = 64)
-    @Comment("修改人")
     public String getUpdateUser() {
         return updateUser;
     }

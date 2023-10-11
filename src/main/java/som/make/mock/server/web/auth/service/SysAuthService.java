@@ -1,8 +1,6 @@
 package som.make.mock.server.web.auth.service;
 
-import jakarta.annotation.Resource;
 import org.apache.commons.codec.binary.Base64;
-import org.springframework.security.crypto.argon2.Argon2PasswordEncoder;
 import org.springframework.stereotype.Service;
 import som.make.mock.server.common.express.ExpressCode;
 import som.make.mock.server.common.express.ExpressException;
@@ -13,16 +11,15 @@ import som.make.mock.server.core.security.Authentication;
 import som.make.mock.server.extend.UuidUtils;
 import som.make.mock.server.web.auth.entity.SysUserLoginDto;
 import som.make.mock.server.web.auth.entity.TokenModel;
-import som.make.mock.server.web.system.dao.SysRolePermDao;
 import som.make.mock.server.web.system.dao.SysUserDao;
-import som.make.mock.server.web.system.dao.SysUserRoleDao;
+import som.make.mock.server.web.system.entity.SysPerm;
 import som.make.mock.server.web.system.entity.SysRole;
-import som.make.mock.server.web.system.entity.SysRolePerm;
 import som.make.mock.server.web.system.entity.SysUser;
 import som.make.mock.server.web.system.entity.SysUserRole;
 
 import java.nio.charset.StandardCharsets;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class SysAuthService {
@@ -30,15 +27,11 @@ public class SysAuthService {
     private final PasswordEncoder passwordEncoder;
     private final TokenCache tokenCache;
     private final SysUserDao sysUserDao;
-    private final SysUserRoleDao sysUserRoleDao;
-    private final SysRolePermDao sysRolePermDao;
 
-    public SysAuthService(PasswordEncoder passwordEncoder, TokenCache tokenCache, SysUserDao sysUserDao, SysUserRoleDao sysUserRoleDao, SysRolePermDao sysRolePermDao) {
+    public SysAuthService(PasswordEncoder passwordEncoder, TokenCache tokenCache, SysUserDao sysUserDao) {
         this.passwordEncoder = passwordEncoder;
         this.tokenCache = tokenCache;
         this.sysUserDao = sysUserDao;
-        this.sysUserRoleDao = sysUserRoleDao;
-        this.sysRolePermDao = sysRolePermDao;
     }
 
     public TokenModel login(SysUserLoginDto sysUserLoginDto) throws ExpressException {
@@ -47,17 +40,13 @@ public class SysAuthService {
             SysUser sysUser = optionalSysUser.get();
             if (passwordEncoder.matches(sysUserLoginDto.getPassword(), sysUser.getPassword())) {
                 String token = Base64.encodeBase64String(UuidUtils.simpleUuid().getBytes(StandardCharsets.UTF_8));
-                String refreshToken = passwordEncoder.encoder(token);
-                List<SysUserRole> sysUserRoleList = sysUserRoleDao.findAllByUserId(sysUser.getUserId());
+                String refreshToken = passwordEncoder.getNoPrefixEncoder(token);
                 Set<SysRole> sysRoleSet = new HashSet<>();
-                Set<String> roleIdSet = new HashSet<>();
-                sysUserRoleList.forEach(sysUserRole -> {
-                    sysRoleSet.add(sysUserRole.getSysRole());
-                    roleIdSet.add(sysUserRole.getSysRole().getRoleId());
-                });
                 Set<String> permSet = new HashSet<>();
-                List<SysRolePerm> sysRolePermList = sysRolePermDao.findAllByRoleIdIn(roleIdSet);
-                sysRolePermList.forEach(sysRolePerm -> sysRolePerm.getSysPerms().forEach(sysPerm -> permSet.add(sysPerm.getPermCode())));
+                sysUser.getSysRoleList().forEach(sysRole -> {
+                    sysRoleSet.add(sysRole);
+                    permSet.addAll(sysRole.getSysPermList().stream().map(SysPerm::getPermCode).collect(Collectors.toSet()));
+                });
                 Authentication<SysUser, SysRole> authentication = new Authentication<>();
                 authentication.setToken(token);
                 authentication.setPrincipal(sysUser);

@@ -11,21 +11,43 @@ import java.util.List;
 @Table(name = "sys_user")
 public class SysUser {
 
-    private String userId;
-    private String userName;
-    private String loginName;
-    private String nickname;
-    private String password;
-    private String status;
-    private LocalDateTime createTime;
-    private String createUser;
-    private LocalDateTime updateTime;
-    private String updateUser;
-
     @Id
     @UuidGenerator(style = UuidGenerator.Style.TIME)
     @Comment("用户id")
     @Column(length = 64)
+    private String userId;
+    @Column(length = 32)
+    @Comment("用户名")
+    private String userName;
+    @Column(length = 32)
+    @Comment("登录名")
+    private String loginName;
+    @Column(length = 32)
+    @Comment("昵称")
+    private String nickname;
+    @Column(length = 256)
+    @Comment("密码")
+    private String password;
+    @Column(length = 2)
+    @Comment("状态")
+    private String status;
+    @Column
+    @Comment("创建时间")
+    private LocalDateTime createTime;
+    @Column(length = 64)
+    @Comment("创建人")
+    private String createUser;
+    @Column
+    @Comment("修改时间")
+    private LocalDateTime updateTime;
+    @Column(length = 64)
+    @Comment("修改人")
+    private String updateUser;
+
+    @OneToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "sys_user_role", joinColumns = {@JoinColumn(name = "user_id")}, inverseJoinColumns = {@JoinColumn(name = "role_id")})
+    private List<SysRole> sysRoleList;
+
     public String getUserId() {
         return userId;
     }
@@ -34,8 +56,6 @@ public class SysUser {
         this.userId = userId;
     }
 
-    @Column(length = 32)
-    @Comment("用户名")
     public String getUserName() {
         return userName;
     }
@@ -44,8 +64,6 @@ public class SysUser {
         this.userName = userName;
     }
 
-    @Column(length = 32)
-    @Comment("登录名")
     public String getLoginName() {
         return loginName;
     }
@@ -54,8 +72,6 @@ public class SysUser {
         this.loginName = loginName;
     }
 
-    @Column(length = 32)
-    @Comment("昵称")
     public String getNickname() {
         return nickname;
     }
@@ -64,8 +80,6 @@ public class SysUser {
         this.nickname = nickname;
     }
 
-    @Column(length = 256)
-    @Comment("密码")
     public String getPassword() {
         return password;
     }
@@ -74,8 +88,6 @@ public class SysUser {
         this.password = password;
     }
 
-    @Column(length = 2)
-    @Comment("状态")
     public String getStatus() {
         return status;
     }
@@ -84,8 +96,6 @@ public class SysUser {
         this.status = status;
     }
 
-    @Column
-    @Comment("创建时间")
     public LocalDateTime getCreateTime() {
         return createTime;
     }
@@ -94,8 +104,6 @@ public class SysUser {
         this.createTime = createTime;
     }
 
-    @Column(length = 64)
-    @Comment("创建人")
     public String getCreateUser() {
         return createUser;
     }
@@ -104,8 +112,6 @@ public class SysUser {
         this.createUser = createUser;
     }
 
-    @Column
-    @Comment("修改时间")
     public LocalDateTime getUpdateTime() {
         return updateTime;
     }
@@ -114,8 +120,6 @@ public class SysUser {
         this.updateTime = updateTime;
     }
 
-    @Column(length = 64)
-    @Comment("修改人")
     public String getUpdateUser() {
         return updateUser;
     }
@@ -124,4 +128,11 @@ public class SysUser {
         this.updateUser = updateUser;
     }
 
+    public List<SysRole> getSysRoleList() {
+        return sysRoleList;
+    }
+
+    public void setSysRoleList(List<SysRole> sysRoleList) {
+        this.sysRoleList = sysRoleList;
+    }
 }

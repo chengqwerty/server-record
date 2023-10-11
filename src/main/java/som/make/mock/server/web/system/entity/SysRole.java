@@ -1,30 +1,47 @@
 package som.make.mock.server.web.system.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import org.hibernate.annotations.Comment;
 import org.hibernate.annotations.UuidGenerator;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "sys_role")
 public class SysRole {
 
-    private String roleId;
-    private String roleCode;
-    private String roleName;
-    private String roleDescription;
-    private LocalDateTime createTime;
-    private String createUser;
-    private LocalDateTime updateTime;
-    private String updateUser;
-
     @Id
+    @Column(length = 64)
     @UuidGenerator(style = UuidGenerator.Style.TIME)
     @Comment("主键")
+    private String roleId;
+    @Column(length = 32)
+    @Comment("角色编码")
+    private String roleCode;
+    @Column(length = 64)
+    @Comment("角色名称")
+    private String roleName;
+    @Column(length = 256)
+    @Comment("角色描述")
+    private String roleDescription;
+    @Column
+    @Comment("创建时间")
+    private LocalDateTime createTime;
+    @Column(length = 64)
+    @Comment("创建人")
+    private String createUser;
+    @Column
+    @Comment("修改时间")
+    private LocalDateTime updateTime;
+    @Column(length = 64)
+    @Comment("修改人")
+    private String updateUser;
+
+    @OneToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "sys_role_perm", joinColumns = {@JoinColumn(name = "role_id")}, inverseJoinColumns = {@JoinColumn(name = "perm_id")})
+    public List<SysPerm> sysPermList;
+
     public String getRoleId() {
         return roleId;
     }
@@ -33,8 +50,6 @@ public class SysRole {
         this.roleId = roleId;
     }
 
-    @Column(length = 32)
-    @Comment("角色编码")
     public String getRoleCode() {
         return roleCode;
     }
@@ -43,8 +58,6 @@ public class SysRole {
         this.roleCode = roleCode;
     }
 
-    @Column(length = 64)
-    @Comment("角色名称")
     public String getRoleName() {
         return roleName;
     }
@@ -53,8 +66,6 @@ public class SysRole {
         this.roleName = roleName;
     }
 
-    @Column(length = 256)
-    @Comment("角色描述")
     public String getRoleDescription() {
         return roleDescription;
     }
@@ -63,8 +74,6 @@ public class SysRole {
         this.roleDescription = roleDescription;
     }
 
-    @Column
-    @Comment("创建时间")
     public LocalDateTime getCreateTime() {
         return createTime;
     }
@@ -73,8 +82,6 @@ public class SysRole {
         this.createTime = createTime;
     }
 
-    @Column(length = 64)
-    @Comment("创建人")
     public String getCreateUser() {
         return createUser;
     }
@@ -83,8 +90,6 @@ public class SysRole {
         this.createUser = createUser;
     }
 
-    @Column
-    @Comment("修改时间")
     public LocalDateTime getUpdateTime() {
         return updateTime;
     }
@@ -93,13 +98,19 @@ public class SysRole {
         this.updateTime = updateTime;
     }
 
-    @Column(length = 64)
-    @Comment("修改人")
     public String getUpdateUser() {
         return updateUser;
     }
 
     public void setUpdateUser(String updateUser) {
         this.updateUser = updateUser;
+    }
+
+    public List<SysPerm> getSysPermList() {
+        return sysPermList;
+    }
+
+    public void setSysPermList(List<SysPerm> sysPermList) {
+        this.sysPermList = sysPermList;
     }
 }

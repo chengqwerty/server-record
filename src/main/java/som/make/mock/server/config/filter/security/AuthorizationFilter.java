@@ -8,7 +8,10 @@ import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Component;
 import som.make.mock.server.config.filter.security.http.HttpSecurity;
 import som.make.mock.server.config.filter.security.http.WebSecurityExpression;
+import som.make.mock.server.core.security.Authentication;
 import som.make.mock.server.core.security.SecurityContextHolder;
+import som.make.mock.server.web.system.entity.SysRole;
+import som.make.mock.server.web.system.entity.SysUser;
 
 import java.io.IOException;
 import java.util.List;
@@ -31,10 +34,13 @@ public class AuthorizationFilter implements Filter {
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         HttpServletRequest httpServletRequest = (HttpServletRequest) servletRequest;
-        if (!httpServletRequest.getMethod().equals(HttpMethod.OPTIONS.name())) {
+        Authentication<SysUser, SysRole> authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null && authentication.getPrincipal().getLoginName().equals("admin")) {
+            // admin 作为超级管理员跳过鉴权这一步。
+        } else if (!httpServletRequest.getMethod().equals(HttpMethod.OPTIONS.name())) {
             List<HttpSecurity.AuthorizedUrl> authorizedUrlList = httpSecurity.getAuthorizedUrlList();
             String servletPath = httpServletRequest.getServletPath();
-            WebSecurityExpression webSecurityExpression = new WebSecurityExpression(SecurityContextHolder.getContext().getAuthentication());
+            WebSecurityExpression webSecurityExpression = new WebSecurityExpression(authentication);
             for (HttpSecurity.AuthorizedUrl authorizedUrl: authorizedUrlList) {
                 String pattern = authorizedUrl.getPathPattern(servletPath);
                 if (pattern != null) {
