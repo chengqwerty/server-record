@@ -17,6 +17,7 @@ import java.time.LocalDateTime;
 public class SysMenu {
 
     @Id
+    @Column(length = 64)
     @UuidGenerator(style = UuidGenerator.Style.TIME)
     @Comment("菜单id")
     private String menuId;
