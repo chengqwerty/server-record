@@ -58,10 +58,10 @@ public class SysAuthService {
                 tokenCache.putToken(refreshToken, tokenDetails);
                 return tokenModel;
             } else {
-                throw new ExpressException(ExpressCode.USER_LOGIN_ERROR.getName(), ExpressCode.USER_LOGIN_ERROR.getCode());
+                throw new ExpressException(ExpressCode.USER_LOGIN_ERROR);
             }
         } else {
-            throw new ExpressException(ExpressCode.USER_NOT_EXISTS.getName(), ExpressCode.USER_NOT_EXISTS.getCode());
+            throw new ExpressException(ExpressCode.USER_NOT_EXISTS);
         }
     }
 

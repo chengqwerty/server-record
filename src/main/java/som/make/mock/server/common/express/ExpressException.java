@@ -4,7 +4,7 @@ public class ExpressException extends Exception {
 
     private int code;
 
-    public ExpressException(String message, int code) {
+    public ExpressException(int code, String message) {
         super(message);
         this.code = code;
     }

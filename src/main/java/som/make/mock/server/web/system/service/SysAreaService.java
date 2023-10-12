@@ -23,7 +23,7 @@ public class SysAreaService {
     @Transactional(rollbackFor = {Error.class, RuntimeException.class, ExpressException.class})
     public SysArea addArea(SysArea sysArea) throws ExpressException {
         if (sysAreaDao.findByAreaCode(sysArea.getAreaCode()).isPresent()) {
-            throw new ExpressException("该区域编码已经被使用！", ExpressCode.REPEAT.getCode());
+            throw new ExpressException(ExpressCode.REPEAT.getCode(), "该区域编码已经被使用！");
         }
         Optional<SysArea> optionalParent = sysAreaDao.findById(sysArea.getParentId());
         optionalParent.ifPresentOrElse(area -> sysArea.setExpandCode(area.getExpandCode() + "-" + sysArea.getAreaCode()),
@@ -38,6 +38,19 @@ public class SysAreaService {
 
     public List<SysArea> getAreas(String parentId) {
         return sysAreaDao.findAllByParentId(parentId);
+    }
+
+    @Transactional(rollbackFor = {Error.class, RuntimeException.class, ExpressException.class})
+    public SysArea updateArea(SysArea newRecord) throws ExpressException {
+        Optional<SysArea> optionalOld = sysAreaDao.findById(newRecord.getAreaId());
+        if (optionalOld.isEmpty()) {
+            throw new ExpressException(ExpressCode.UPDATE_NOT_EXIST.getCode(), ExpressCode.UPDATE_NOT_EXIST.getName());
+        }
+        SysArea oldRecord = optionalOld.get();
+        oldRecord.setAreaName(newRecord.getAreaName());
+        LocalDateTime now = LocalDateTime.now();
+        oldRecord.setUpdateTime(now);
+        return sysAreaDao.save(oldRecord);
     }
 
 }

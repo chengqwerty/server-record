@@ -3,6 +3,7 @@ package som.make.mock.server.web.system.controller;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import som.make.mock.server.common.validation.AddGroup;
+import som.make.mock.server.common.validation.UpdateGroup;
 import som.make.mock.server.web.system.entity.SysArea;
 import som.make.mock.server.common.express.ExpressException;
 import som.make.mock.server.common.ResultBean;
@@ -30,9 +31,18 @@ public class SysAreaController {
     /**
      * 根据areaParentCode获取子级区域，方法不递归
      */
-    @RequestMapping(value = "get")
+    @GetMapping(value = "get")
     public ResultBean<List<SysArea>> get(@RequestParam("parentId") String parentId) {
         return new ResultBean<>(sysAreaService.getAreas(parentId));
+    }
+
+    /**
+     * 修改区域，修改项：
+     * 名称
+     */
+    @PostMapping(value = "update")
+    public ResultBean<SysArea> update(@RequestBody @Validated(AddGroup.class) SysArea sysArea) throws ExpressException {
+        return new ResultBean<>(sysAreaService.updateArea(sysArea));
     }
 
 }
