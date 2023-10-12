@@ -1,6 +1,8 @@
 package som.make.mock.server.web.system.controller;
 
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import som.make.mock.server.common.validation.AddGroup;
 import som.make.mock.server.web.system.entity.SysArea;
 import som.make.mock.server.common.express.ExpressException;
 import som.make.mock.server.common.ResultBean;
@@ -21,21 +23,16 @@ public class SysAreaController {
      * 新增区域
      */
     @RequestMapping(value = "add", method = RequestMethod.POST)
-    public ResultBean<String> add(@RequestBody SysArea sysArea) {
-        try {
-            sysAreaService.addArea(sysArea);
-        } catch (ExpressException e) {
-            return new ResultBean<>(e.getCode(), e.getMessage());
-        }
-        return new ResultBean<>();
+    public ResultBean<SysArea> add(@RequestBody @Validated(AddGroup.class) SysArea sysArea) throws ExpressException {
+        return new ResultBean<>(sysAreaService.addArea(sysArea));
     }
 
     /**
      * 根据areaParentCode获取子级区域，方法不递归
      */
-    @RequestMapping(value = "get", method = RequestMethod.GET)
-    public ResultBean<List<SysArea>> get(@RequestParam("areaParentCode") String areaParentCode) {
-        return new ResultBean<>(sysAreaService.getAreas(areaParentCode));
+    @RequestMapping(value = "get")
+    public ResultBean<List<SysArea>> get(@RequestParam("parentId") String parentId) {
+        return new ResultBean<>(sysAreaService.getAreas(parentId));
     }
 
 }

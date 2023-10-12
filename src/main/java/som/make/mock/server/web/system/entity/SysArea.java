@@ -1,38 +1,66 @@
 package som.make.mock.server.web.system.entity;
 
 import jakarta.persistence.*;
-import org.hibernate.annotations.Comment;
-import org.hibernate.annotations.UuidGenerator;
+import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotNull;
+import org.hibernate.annotations.*;
+import som.make.mock.server.common.validation.AddGroup;
 
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "sys_area")
+@SQLDelete(table = "sys_area", sql = "update sys_area set delete_flag = 1 where delete_flag = ? ")
+@Where(clause = "delete_flag = 0")
 public class SysArea {
 
-    private String areaId;
-
-    private String areaCode;
-
-    private String areaParentCode;
-
-    private String expandCode;
-
-    private String areaName;
-
-    private String areaDescription;
-
-    private LocalDateTime createTime;
-
-    private String createUser;
-
-    private LocalDateTime updateTime;
-
-    private String updateUser;
-
     @Id
+    @Column(name = "area_id", length = 64)
     @UuidGenerator(style = UuidGenerator.Style.TIME)
     @Comment("区域id")
+    private String areaId;
+
+    @Column(length = 64, unique = true, nullable = false)
+    @Comment("区域编码")
+    private String areaCode;
+
+    @Column(length = 64, nullable = false)
+    @NotNull(groups = {AddGroup.class})
+    private String parentId;
+
+    @Column(length = 1024, unique = true, nullable = false)
+    @Comment("扩展编码，从最上级编码递进。")
+    private String expandCode;
+
+    @Column(length = 256, nullable = false)
+    @Comment("区域名称")
+    private String areaName;
+
+    @Column(length = 1024)
+    @Comment("区域详细信息，备注。")
+    private String areaDescription;
+
+    @Column(name = "delete_flag", nullable = false)
+    @Comment("删除标记")
+    @ColumnDefault("0")
+    private Integer deleteFlag = 0;
+
+    @Column()
+    @Comment("创建时间")
+    private LocalDateTime createTime;
+
+    @Column(length = 64)
+    @Comment("创建人")
+    private String creteUser;
+
+    @Column()
+    @Comment("修改时间")
+    private LocalDateTime updateTime;
+
+    @Column(length = 64)
+    @Comment("修改人")
+    private String updateUser;
+
     public String getAreaId() {
         return areaId;
     }
@@ -41,8 +69,6 @@ public class SysArea {
         this.areaId = areaId;
     }
 
-    @Column(length = 64, unique = true)
-    @Comment("区域编码")
     public String getAreaCode() {
         return areaCode;
     }
@@ -51,18 +77,14 @@ public class SysArea {
         this.areaCode = areaCode;
     }
 
-    @Column(length = 64)
-    @Comment("父级区域编码")
-    public String getAreaParentCode() {
-        return areaParentCode;
+    public String getParentId() {
+        return parentId;
     }
 
-    public void setAreaParentCode(String areaParentCode) {
-        this.areaParentCode = areaParentCode;
+    public void setParentId(String parentId) {
+        this.parentId = parentId;
     }
 
-    @Column(length = 1024, unique = true)
-    @Comment("扩展编码，从最上级编码递进。")
     public String getExpandCode() {
         return expandCode;
     }
@@ -71,8 +93,6 @@ public class SysArea {
         this.expandCode = expandCode;
     }
 
-    @Column(length = 256)
-    @Comment("区域名称")
     public String getAreaName() {
         return areaName;
     }
@@ -81,8 +101,6 @@ public class SysArea {
         this.areaName = areaName;
     }
 
-    @Column(length = 1024)
-    @Comment("区域详细信息，备注。")
     public String getAreaDescription() {
         return areaDescription;
     }
@@ -91,8 +109,6 @@ public class SysArea {
         this.areaDescription = areaDescription;
     }
 
-    @Column
-    @Comment("创建时间")
     public LocalDateTime getCreateTime() {
         return createTime;
     }
@@ -101,18 +117,14 @@ public class SysArea {
         this.createTime = createTime;
     }
 
-    @Column(length = 64)
-    @Comment("创建人")
-    public String getCreateUser() {
-        return createUser;
+    public String getCreteUser() {
+        return creteUser;
     }
 
-    public void setCreateUser(String createUser) {
-        this.createUser = createUser;
+    public void setCreteUser(String creteUser) {
+        this.creteUser = creteUser;
     }
 
-    @Column
-    @Comment("修改时间")
     public LocalDateTime getUpdateTime() {
         return updateTime;
     }
@@ -121,8 +133,6 @@ public class SysArea {
         this.updateTime = updateTime;
     }
 
-    @Column(length = 64)
-    @Comment("修改人")
     public String getUpdateUser() {
         return updateUser;
     }

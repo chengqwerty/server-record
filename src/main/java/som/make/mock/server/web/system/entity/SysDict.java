@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "sys_dict")
 @SQLDelete(table = "sys_dict", sql = "update sys_dict set delete_flag = 1 where delete_flag = ? ")
-@Where(clause = "deleteFlag = 0")
+@Where(clause = "delete_flag = 0")
 public class SysDict {
     @Id
     @UuidGenerator(style = UuidGenerator.Style.TIME)
@@ -43,11 +43,11 @@ public class SysDict {
 
     @Column(length = 64)
     @Comment("创建人")
-    private LocalDateTime creteUser;
+    private String creteUser;
 
     @Column()
     @Comment("修改时间")
-    private String updateTime;
+    private LocalDateTime updateTime;
 
     @Column(length = 64)
     @Comment("修改人")
@@ -101,19 +101,19 @@ public class SysDict {
         this.createTime = createTime;
     }
 
-    public LocalDateTime getCreteUser() {
+    public String getCreteUser() {
         return creteUser;
     }
 
-    public void setCreteUser(LocalDateTime creteUser) {
+    public void setCreteUser(String creteUser) {
         this.creteUser = creteUser;
     }
 
-    public String getUpdateTime() {
+    public LocalDateTime getUpdateTime() {
         return updateTime;
     }
 
-    public void setUpdateTime(String updateTime) {
+    public void setUpdateTime(LocalDateTime updateTime) {
         this.updateTime = updateTime;
     }
 

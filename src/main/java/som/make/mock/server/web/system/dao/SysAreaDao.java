@@ -8,10 +8,10 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface SysAreaDao extends JpaRepository<SysArea, Long> {
+public interface SysAreaDao extends JpaRepository<SysArea, String> {
 
     Optional<SysArea> findByAreaCode(String areaCode);
 
-    List<SysArea> findAllByAreaParentCode(String areaParentCode);
+    List<SysArea> findAllByParentId(String parentId);
 
 }

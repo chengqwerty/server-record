@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "sys_dict_detail")
 @SQLDelete(table = "sys_dict_detail", sql = "update sys_dict_detail set delete_flag = 1 where delete_flag = ? ")
-@Where(clause = "deleteFlag = 0")
+@Where(clause = "delete_flag = 0")
 public class SysDictDetail {
 
     @Id
@@ -44,14 +44,85 @@ public class SysDictDetail {
 
     @Column(length = 64)
     @Comment("创建人")
-    private LocalDateTime creteUser;
+    private String creteUser;
 
     @Column()
     @Comment("修改时间")
-    private String updateTime;
+    private LocalDateTime updateTime;
 
     @Column(length = 64)
     @Comment("修改人")
     private String updateUser;
 
+    public String getDictDetailId() {
+        return dictDetailId;
+    }
+
+    public void setDictDetailId(String dictDetailId) {
+        this.dictDetailId = dictDetailId;
+    }
+
+    public String getDictCode() {
+        return dictCode;
+    }
+
+    public void setDictCode(String dictCode) {
+        this.dictCode = dictCode;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Integer getDeleteFlag() {
+        return deleteFlag;
+    }
+
+    public void setDeleteFlag(Integer deleteFlag) {
+        this.deleteFlag = deleteFlag;
+    }
+
+    public LocalDateTime getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(LocalDateTime createTime) {
+        this.createTime = createTime;
+    }
+
+    public String getCreteUser() {
+        return creteUser;
+    }
+
+    public void setCreteUser(String creteUser) {
+        this.creteUser = creteUser;
+    }
+
+    public LocalDateTime getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(LocalDateTime updateTime) {
+        this.updateTime = updateTime;
+    }
+
+    public String getUpdateUser() {
+        return updateUser;
+    }
+
+    public void setUpdateUser(String updateUser) {
+        this.updateUser = updateUser;
+    }
 }
