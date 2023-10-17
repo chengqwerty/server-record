@@ -29,7 +29,7 @@ public class SysAreaController {
     }
 
     /**
-     * 根据areaParentCode获取子级区域，方法不递归
+     * 根据parentId获取子级区域
      */
     @GetMapping(value = "get")
     public ResultBean<List<SysArea>> get(@RequestParam("parentId") String parentId) {
