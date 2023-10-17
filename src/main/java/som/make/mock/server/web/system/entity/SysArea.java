@@ -1,16 +1,20 @@
 package som.make.mock.server.web.system.entity;
 
 import jakarta.persistence.*;
+import jakarta.persistence.ForeignKey;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 import org.hibernate.annotations.*;
 import som.make.mock.server.common.validation.AddGroup;
+import som.make.mock.server.common.validation.DeleteGroup;
+import som.make.mock.server.common.validation.UpdateGroup;
 
 import java.time.LocalDateTime;
+import java.util.Set;
 
 @Entity
 @Table(name = "sys_area")
-@SQLDelete(table = "sys_area", sql = "update sys_area set delete_flag = 1 where delete_flag = ? ")
+@SQLDelete(table = "sys_area", sql = "update sys_area set delete_flag = 1 where area_id = ? ")
 @Where(clause = "delete_flag = 0")
 public class SysArea {
 
@@ -18,13 +22,14 @@ public class SysArea {
     @Column(name = "area_id", length = 64)
     @UuidGenerator(style = UuidGenerator.Style.TIME)
     @Comment("区域id")
+    @NotNull(groups = {UpdateGroup.class, DeleteGroup.class})
     private String areaId;
 
     @Column(length = 64, unique = true, nullable = false)
     @Comment("区域编码")
     private String areaCode;
 
-    @Column(length = 64, nullable = false)
+    @Column(name = "parent_id", length = 64, nullable = false)
     @NotNull(groups = {AddGroup.class})
     private String parentId;
 
@@ -60,6 +65,11 @@ public class SysArea {
     @Column(length = 64)
     @Comment("修改人")
     private String updateUser;
+
+    @OneToMany(fetch = FetchType.EAGER)
+    @JoinColumn(name = "area_id", referencedColumnName = "parent_id", foreignKey = @ForeignKey(name = "none", value =
+            ConstraintMode.NO_CONSTRAINT), insertable = false, updatable = false)
+    private Set<SysArea> children;
 
     public String getAreaId() {
         return areaId;
@@ -109,6 +119,14 @@ public class SysArea {
         this.areaDescription = areaDescription;
     }
 
+    public Integer getDeleteFlag() {
+        return deleteFlag;
+    }
+
+    public void setDeleteFlag(Integer deleteFlag) {
+        this.deleteFlag = deleteFlag;
+    }
+
     public LocalDateTime getCreateTime() {
         return createTime;
     }
@@ -139,5 +157,13 @@ public class SysArea {
 
     public void setUpdateUser(String updateUser) {
         this.updateUser = updateUser;
+    }
+
+    public Set<SysArea> getChildren() {
+        return children;
+    }
+
+    public void setChildren(Set<SysArea> children) {
+        this.children = children;
     }
 }

@@ -9,7 +9,8 @@ public enum ExpressCode {
     REPEAT("重复", 50001),
     USER_NOT_EXISTS("用户不存在！", 4002),
     USER_LOGIN_ERROR("用户名或者密码错误！", 4003),
-    UPDATE_NOT_EXIST("修改的数据不存在！", 4103);
+    UPDATE_NOT_EXIST("修改的数据不存在！", 4103),
+    DELETE_NOT_EXIST("修改的数据不存在！", 4104);
 
     private String name;
     private int code;

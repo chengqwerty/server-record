@@ -3,7 +3,7 @@ package som.make.mock.server.web.system.controller;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import som.make.mock.server.common.validation.AddGroup;
-import som.make.mock.server.common.validation.UpdateGroup;
+import som.make.mock.server.common.validation.DeleteGroup;
 import som.make.mock.server.web.system.entity.SysArea;
 import som.make.mock.server.common.express.ExpressException;
 import som.make.mock.server.common.ResultBean;
@@ -43,6 +43,14 @@ public class SysAreaController {
     @PostMapping(value = "update")
     public ResultBean<SysArea> update(@RequestBody @Validated(AddGroup.class) SysArea sysArea) throws ExpressException {
         return new ResultBean<>(sysAreaService.updateArea(sysArea));
+    }
+
+    /**
+     * 删除区域
+     */
+    @PostMapping(value = "delete")
+    public ResultBean<SysArea> delete(@RequestBody @Validated(DeleteGroup.class) SysArea sysArea) throws ExpressException {
+        return new ResultBean<>(sysAreaService.deleteArea(sysArea));
     }
 
 }

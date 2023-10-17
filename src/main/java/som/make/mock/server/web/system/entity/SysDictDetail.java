@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "sys_dict_detail")
-@SQLDelete(table = "sys_dict_detail", sql = "update sys_dict_detail set delete_flag = 1 where delete_flag = ? ")
+@SQLDelete(table = "sys_dict_detail", sql = "update sys_dict_detail set delete_flag = 1 where dict_detail_id = ? ")
 @Where(clause = "delete_flag = 0")
 public class SysDictDetail {
 
