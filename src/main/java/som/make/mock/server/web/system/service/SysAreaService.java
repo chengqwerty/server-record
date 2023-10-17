@@ -34,6 +34,7 @@ public class SysAreaService {
                 });
         LocalDateTime now = LocalDateTime.now();
         sysArea.setCreateTime(now);
+        sysArea.setCreteUser(SecurityContextHolder.getContext().getAuthentication().getPrincipal().getLoginName());
         sysArea.setUpdateTime(now);
         return sysAreaDao.save(sysArea);
     }
