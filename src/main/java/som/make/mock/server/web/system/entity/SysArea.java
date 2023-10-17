@@ -66,7 +66,7 @@ public class SysArea {
     @Comment("修改人")
     private String updateUser;
 
-    @OneToMany(fetch = FetchType.EAGER)
+    @OneToMany(fetch = FetchType.LAZY)
     @JoinColumn(name = "area_id", referencedColumnName = "parent_id", foreignKey = @ForeignKey(name = "none", value =
             ConstraintMode.NO_CONSTRAINT), insertable = false, updatable = false)
     private Set<SysArea> children;
