@@ -17,7 +17,7 @@ public class SysAuthController {
         this.sysAuthService = sysAuthService;
     }
 
-    @PostMapping("userLogin")
+    @PostMapping("login")
     public ResultBean<TokenModel> userLogin(@RequestBody SysUserLoginDto sysUserLoginDto) throws ExpressException {
         return new ResultBean<>(sysAuthService.login(sysUserLoginDto));
     }

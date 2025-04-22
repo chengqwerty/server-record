@@ -1,5 +1,6 @@
 package som.make.mock.server.web.system.service;
 
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import som.make.mock.server.common.express.ExpressCode;
@@ -22,15 +23,31 @@ public class SysMenuService {
     }
 
     public List<SysMenu> getListByParent(String parentId) {
-        return sysMenuDao.findAllByParentId(parentId);
+        Sort sort = Sort.by(Sort.Order.asc("menuSort"));
+        return sysMenuDao.findAllByParentIdAndDelFlagFalse(parentId, sort);
     }
 
-    @Transactional(rollbackFor = {Error.class, RuntimeException.class})
-    public String addMenu(SysMenu sysMenu) {
-        LocalDateTime localDateTime = LocalDateTime.now();
-        sysMenu.setCreateTime(localDateTime);
-        // sysMenu.setCreateUser(SecurityContextHolder.getContext().getAuthentication().getPrincipal().getLoginName());
-        sysMenu.setUpdateTime(localDateTime);
+    /**
+     * 获取用户菜单
+     * 目前比较简单，直接获取所有菜单
+     */
+    public List<SysMenu> getUserMenus() {
+        return sysMenuDao.findAllByDelFlagFalse();
+    }
+
+    @Transactional(rollbackFor = {Error.class, RuntimeException.class, ExpressException.class})
+    public String addMenu(SysMenu sysMenu) throws ExpressException {
+        if (sysMenu.getParentId().equals("0")) {
+            sysMenu.setMenuLevel(1);
+        } else {
+            Optional<SysMenu> optional = sysMenuDao.findById(sysMenu.getParentId());
+            if (optional.isEmpty()) {
+                throw new ExpressException(ExpressCode.COMMON_ERROR.getCode(), "parent菜单不存在！");
+            } else {
+                sysMenu.setMenuLevel(optional.get().getMenuLevel() + 1);
+            }
+        }
+        sysMenu.setCreationInfo(SecurityContextHolder.getContext().getAuthentication().getPrincipal());
         sysMenuDao.save(sysMenu);
         return sysMenu.getMenuId();
     }
@@ -43,11 +60,26 @@ public class SysMenuService {
         }
         SysMenu oldRecord = oldOptional.get();
         oldRecord.setMenuCode(newRecord.getMenuCode());
+        oldRecord.setMenuType(newRecord.getMenuType());
         oldRecord.setMenuName(newRecord.getMenuName());
         oldRecord.setMenuIcon(newRecord.getMenuIcon());
         oldRecord.setMenuDescription(newRecord.getMenuDescription());
+        oldRecord.setMenuSort(newRecord.getMenuSort());
+        oldRecord.setMenuVisible(newRecord.getMenuVisible());
         oldRecord.setMenuLink(newRecord.getMenuLink());
+        oldRecord.setUpdateInfo(SecurityContextHolder.getContext().getAuthentication().getPrincipal());
+        sysMenuDao.save(oldRecord);
+        return 1;
+    }
+
+    @Transactional(rollbackFor = {Error.class, RuntimeException.class, ExpressException.class})
+    public Integer deleteMenu(SysMenu newRecord) throws ExpressException {
+        Optional<SysMenu> oldOptional = sysMenuDao.findById(newRecord.getMenuId());
+        if (oldOptional.isEmpty()) {
+            throw new ExpressException(ExpressCode.UPDATE_NOT_EXIST);
+        }
         // 修改人，修改时间待完善
+        sysMenuDao.logicalDeleteById(oldOptional.get());
         return 1;
     }
 

@@ -54,7 +54,7 @@ public class HttpSecurity {
     }
 
     public class AuthorizedUrl {
-        private List<String> patternList;
+        private final List<String> patternList;
         private String method;
         private String pattern;
 

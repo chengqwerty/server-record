@@ -1,5 +1,7 @@
 package som.make.mock.server.common;
 
+import som.make.mock.server.common.express.ExpressCode;
+
 import java.io.Serial;
 import java.io.Serializable;
 
@@ -41,6 +43,11 @@ public class ResultBean<T> implements Serializable {
         this.code = code;
         this.message = message;
     }
+
+    public ResultBean(ExpressCode expressCode) {
+        this(expressCode.getCode(), expressCode.getName());
+    }
+
 
     public String getMessage() {
         return message;

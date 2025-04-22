@@ -1,8 +1,10 @@
 package som.make.mock.server.web.system.controller;
 
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import som.make.mock.server.common.ResultBean;
 import som.make.mock.server.common.express.ExpressException;
+import som.make.mock.server.core.security.SecurityContextHolder;
 import som.make.mock.server.web.system.entity.SysMenu;
 import som.make.mock.server.web.system.service.SysMenuService;
 
@@ -27,10 +29,18 @@ public class SysMenuController {
     }
 
     /**
+     * 根据parentId查询菜单
+     */
+    @GetMapping("getUserMenus")
+    public ResultBean<List<SysMenu>> getUserMenus() {
+        return new ResultBean<>(sysMenuService.getUserMenus());
+    }
+
+    /**
      * 添加菜单
      */
     @PostMapping("add")
-    public ResultBean<String> addMenu(@RequestBody SysMenu sysMenu) {
+    public ResultBean<String> addMenu(@Validated @RequestBody SysMenu sysMenu) throws ExpressException {
         return new ResultBean<>(sysMenuService.addMenu(sysMenu));
     }
 
@@ -39,7 +49,17 @@ public class SysMenuController {
      */
     @PostMapping("update")
     public ResultBean<Integer> updateMenu(@RequestBody SysMenu sysMenu) throws ExpressException {
+        sysMenu.setUpdateInfo(SecurityContextHolder.getContext().getAuthentication().getPrincipal());
         return new ResultBean<>(sysMenuService.updateMenu(sysMenu));
+    }
+
+    /**
+     * 删除菜单
+     */
+    @PostMapping("delete")
+    public ResultBean<Integer> deleteMenu(@RequestBody SysMenu sysMenu) throws ExpressException {
+        sysMenu.setUpdateInfo(SecurityContextHolder.getContext().getAuthentication().getPrincipal());
+        return new ResultBean<>(sysMenuService.deleteMenu(sysMenu));
     }
 
 }

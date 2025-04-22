@@ -62,9 +62,7 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-redis</artifactId>
-            <scope>provided</scope>
         </dependency>
-
 
         <!-- apache commons-lang3 工具包 -->
         <dependency>

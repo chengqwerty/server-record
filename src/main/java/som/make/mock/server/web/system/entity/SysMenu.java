@@ -1,24 +1,24 @@
 package som.make.mock.server.web.system.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import org.hibernate.annotations.Comment;
-import org.hibernate.annotations.UuidGenerator;
+import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.validator.constraints.Length;
 import som.make.mock.server.common.validation.AddGroup;
+import som.make.mock.server.extend.SnowflakeIdGeneratorImpl;
+import som.make.mock.server.web.common.EntityInfoSetter;
 
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "sys_menu")
-public class SysMenu {
+public class SysMenu implements EntityInfoSetter {
 
     @Id
     @Column(length = 64)
-    @UuidGenerator(style = UuidGenerator.Style.TIME)
+    @GeneratedValue(generator = "snowflakeIdGenerator")
+    @GenericGenerator(name = "snowflakeIdGenerator", type = SnowflakeIdGeneratorImpl.class)
     @Comment("菜单id")
     private String menuId;
     @Column(length = 64, unique = true)
@@ -37,6 +37,12 @@ public class SysMenu {
     @Comment("菜单类型，0：菜单，1：目录")
     @NotNull(groups = {AddGroup.class})
     private Integer menuType;
+    @Column()
+    @Comment("菜单level")
+    private Integer menuLevel;
+    @Column()
+    @Comment("菜单排序")
+    private Integer menuSort;
     @Column(length = 256)
     @Comment("菜单地址")
     private String menuLink;
@@ -51,6 +57,9 @@ public class SysMenu {
     @Comment("是否可见")
     @NotNull(groups = {AddGroup.class})
     private Integer menuVisible;
+    @Column()
+    @Comment("删除标记")
+    public Boolean delFlag = false;
     @Column()
     @Comment("创建时间")
     public LocalDateTime createTime;
@@ -72,19 +81,19 @@ public class SysMenu {
         this.menuId = menuId;
     }
 
-    public String getMenuCode() {
+    public @NotNull String getMenuCode() {
         return menuCode;
     }
 
-    public void setMenuCode(String menuCode) {
+    public void setMenuCode(@NotNull String menuCode) {
         this.menuCode = menuCode;
     }
 
-    public String getMenuName() {
+    public @NotNull String getMenuName() {
         return menuName;
     }
 
-    public void setMenuName(String menuName) {
+    public void setMenuName(@NotNull String menuName) {
         this.menuName = menuName;
     }
 
@@ -96,12 +105,28 @@ public class SysMenu {
         this.menuDescription = menuDescription;
     }
 
-    public Integer getMenuType() {
+    public @NotNull Integer getMenuType() {
         return menuType;
     }
 
-    public void setMenuType(Integer menuType) {
+    public void setMenuType(@NotNull Integer menuType) {
         this.menuType = menuType;
+    }
+
+    public Integer getMenuLevel() {
+        return menuLevel;
+    }
+
+    public void setMenuLevel(@NotNull Integer menuLevel) {
+        this.menuLevel = menuLevel;
+    }
+
+    public Integer getMenuSort() {
+        return menuSort;
+    }
+
+    public void setMenuSort(Integer menuSort) {
+        this.menuSort = menuSort;
     }
 
     public String getMenuLink() {
@@ -120,20 +145,28 @@ public class SysMenu {
         this.menuIcon = menuIcon;
     }
 
-    public String getParentId() {
+    public @NotNull String getParentId() {
         return parentId;
     }
 
-    public void setParentId(String parentId) {
+    public void setParentId(@NotNull String parentId) {
         this.parentId = parentId;
     }
 
-    public Integer getMenuVisible() {
+    public @NotNull Integer getMenuVisible() {
         return menuVisible;
     }
 
-    public void setMenuVisible(Integer menuVisible) {
+    public void setMenuVisible(@NotNull Integer menuVisible) {
         this.menuVisible = menuVisible;
+    }
+
+    public Boolean getDelFlag() {
+        return delFlag;
+    }
+
+    public void setDelFlag(Boolean delFlag) {
+        this.delFlag = delFlag;
     }
 
     public LocalDateTime getCreateTime() {

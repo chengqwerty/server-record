@@ -41,18 +41,26 @@ public class AuthorizationFilter implements Filter {
             List<HttpSecurity.AuthorizedUrl> authorizedUrlList = httpSecurity.getAuthorizedUrlList();
             String servletPath = httpServletRequest.getServletPath();
             WebSecurityExpression webSecurityExpression = new WebSecurityExpression(authentication);
+            /*
+             * 针对所有的权限配置进行过滤，如果有一个配置通过鉴权就可以访问，如果都没通过鉴权就不可以访问。
+             * 如果url没有匹配任何配置默认不通过。
+             */
+            boolean canAccess = false;
             for (HttpSecurity.AuthorizedUrl authorizedUrl: authorizedUrlList) {
                 String pattern = authorizedUrl.getPathPattern(servletPath);
-                if (pattern != null) {
-                    if (!webSecurityExpression.verifyPermissions(pattern)) {
-                        // 如果是没有登录，执行onAuthenticationFailure，如果是没有权限，执行onAuthorizationFailure
-                        if (SecurityContextHolder.getContext().getAuthentication() == null) {
-                            httpSecurity.getFailureHandler().onAuthenticationFailure((HttpServletRequest) servletRequest, (HttpServletResponse) servletResponse);
-                        } else {
-                            httpSecurity.getFailureHandler().onAuthorizationFailure((HttpServletRequest) servletRequest, (HttpServletResponse) servletResponse);
-                        }
-                    }
+                if (pattern != null && webSecurityExpression.verifyPermissions(pattern)) {
+                    canAccess = true;
+                    break;
                 }
+            }
+            if (!canAccess) {
+                // 如果是没有登录，执行onAuthenticationFailure，如果是没有权限，执行onAuthorizationFailure
+                if (SecurityContextHolder.getContext().getAuthentication() == null) {
+                    httpSecurity.getFailureHandler().onAuthenticationFailure((HttpServletRequest) servletRequest, (HttpServletResponse) servletResponse);
+                } else {
+                    httpSecurity.getFailureHandler().onAuthorizationFailure((HttpServletRequest) servletRequest, (HttpServletResponse) servletResponse);
+                }
+                return;
             }
         }
         filterChain.doFilter(servletRequest, servletResponse);

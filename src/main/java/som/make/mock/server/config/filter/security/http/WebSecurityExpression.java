@@ -11,13 +11,12 @@ import java.util.HashSet;
 
 public class WebSecurityExpression {
 
-    private final SecurityExpression securityExpression;
     private final StandardEvaluationContext standardEvaluationContext = new StandardEvaluationContext();
     private final SpelExpressionParser spelExpressionParser = new SpelExpressionParser();
 
     public WebSecurityExpression(Authentication<SysUser, SysRole> authentication) {
-        this.securityExpression = new SecurityExpression(authentication);
-        standardEvaluationContext.setRootObject(this.securityExpression);
+        SecurityExpression securityExpression = new SecurityExpression(authentication);
+        standardEvaluationContext.setRootObject(securityExpression);
     }
 
     public boolean verifyPermissions(String pattern) {

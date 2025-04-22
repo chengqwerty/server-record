@@ -17,7 +17,8 @@ public class WebSecurityConfig implements InitializingBean {
     @Override
     public void afterPropertiesSet() throws Exception {
         httpSecurity.setFailureHandler(new DefaultAuthenticationFailureHandler())
-                .antMatchers("/login").permitAll()
+                .antMatchers("/**").access("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
+                .antMatchers("/auth/login").permitAll()
                 .antMatchers("/sys/**").access("hasRole('admin')");
     }
 
