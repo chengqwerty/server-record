@@ -1,6 +1,6 @@
 package som.make.mock.server.web.auth.entity;
 
-public class SysUserLoginDto {
+public class UserLoginDto {
 
     private String loginName;
     private String password;

@@ -41,7 +41,7 @@ public class SysMenuController {
      */
     @PostMapping("add")
     public ResultBean<String> addMenu(@Validated @RequestBody SysMenu sysMenu) throws ExpressException {
-        return new ResultBean<>(sysMenuService.addMenu(sysMenu));
+        return new ResultBean<>(sysMenuService.addMenu(sysMenu, SecurityContextHolder.getAuthentication()));
     }
 
     /**
@@ -49,8 +49,7 @@ public class SysMenuController {
      */
     @PostMapping("update")
     public ResultBean<Integer> updateMenu(@RequestBody SysMenu sysMenu) throws ExpressException {
-        sysMenu.setUpdateInfo(SecurityContextHolder.getContext().getAuthentication().getPrincipal());
-        return new ResultBean<>(sysMenuService.updateMenu(sysMenu));
+        return new ResultBean<>(sysMenuService.updateMenu(sysMenu, SecurityContextHolder.getAuthentication()));
     }
 
     /**
@@ -58,8 +57,7 @@ public class SysMenuController {
      */
     @PostMapping("delete")
     public ResultBean<Integer> deleteMenu(@RequestBody SysMenu sysMenu) throws ExpressException {
-        sysMenu.setUpdateInfo(SecurityContextHolder.getContext().getAuthentication().getPrincipal());
-        return new ResultBean<>(sysMenuService.deleteMenu(sysMenu));
+        return new ResultBean<>(sysMenuService.deleteMenu(sysMenu, SecurityContextHolder.getAuthentication()));
     }
 
 }

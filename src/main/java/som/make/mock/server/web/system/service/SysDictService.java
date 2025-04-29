@@ -1,8 +1,8 @@
 package som.make.mock.server.web.system.service;
 
 import org.springframework.stereotype.Service;
-import som.make.mock.server.web.system.dao.SysDictDao;
-import som.make.mock.server.web.system.dao.SysDictDetailDao;
+import som.make.mock.server.web.system.repository.SysDictDao;
+import som.make.mock.server.web.system.repository.SysDictDetailDao;
 
 @Service
 public class SysDictService {

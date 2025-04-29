@@ -1,6 +1,6 @@
 package som.make.mock.server.common.express;
 
-public class ExpressException extends Exception {
+public class ExpressException extends RuntimeException {
 
     private int code;
 

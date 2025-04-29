@@ -5,7 +5,21 @@ import som.make.mock.server.web.system.entity.SysUser;
 
 public class SecurityContext {
 
-    private Authentication<SysUser, SysRole> authentication = null;
+    public static SecurityContext createNoLoginUser() {
+        SecurityContext securityContext = new SecurityContext();
+        Authentication<SysUser, SysRole> authentication = new Authentication<>();
+        authentication.setToken("noLoginUser");
+        SysUser sysUser = new SysUser();
+        sysUser.setLoginName("noLoginUser");
+        authentication.setPrincipal(sysUser);
+        securityContext.setAuthentication(authentication);
+        return securityContext;
+    }
+
+    private SecurityContext() {
+    }
+
+    private Authentication<SysUser, SysRole> authentication;
 
     public Authentication<SysUser, SysRole> getAuthentication() {
         return authentication;

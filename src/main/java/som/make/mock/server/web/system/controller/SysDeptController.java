@@ -6,6 +6,8 @@ import som.make.mock.server.common.ResultBean;
 import som.make.mock.server.common.express.ExpressException;
 import som.make.mock.server.common.validation.AddGroup;
 import som.make.mock.server.common.validation.DeleteGroup;
+import som.make.mock.server.core.security.SecurityContext;
+import som.make.mock.server.core.security.SecurityContextHolder;
 import som.make.mock.server.web.system.entity.SysDept;
 import som.make.mock.server.web.system.service.SysDeptService;
 
@@ -26,15 +28,20 @@ public class SysDeptController {
      */
     @RequestMapping(value = "add", method = RequestMethod.POST)
     public ResultBean<SysDept> add(@RequestBody @Validated(AddGroup.class) SysDept sysDept) throws ExpressException {
-        return new ResultBean<>(sysDeptService.addDept(sysDept));
+        return new ResultBean<>(sysDeptService.addDept(sysDept, SecurityContextHolder.getAuthentication()));
     }
 
     /**
      * 根据parentId获取子级区域
      */
-    @GetMapping(value = "get")
-    public ResultBean<List<SysDept>> get(@RequestParam("parentId") String parentId) {
-        return new ResultBean<>(sysDeptService.getDeptList(parentId));
+    @GetMapping(value = "getListByParent")
+    public ResultBean<List<SysDept>> getListByParent(@RequestParam("parentId") String parentId) {
+        return new ResultBean<>(sysDeptService.getListByParent(parentId));
+    }
+
+    @GetMapping(value = "getAllDeptList")
+    public ResultBean<List<SysDept>> getAllDeptList() {
+        return new ResultBean<>(sysDeptService.getAllDeptList());
     }
 
     /**
@@ -43,14 +50,14 @@ public class SysDeptController {
      */
     @PostMapping(value = "update")
     public ResultBean<SysDept> update(@RequestBody @Validated(AddGroup.class) SysDept sysDept) throws ExpressException {
-        return new ResultBean<>(sysDeptService.updateDept(sysDept));
+        return new ResultBean<>(sysDeptService.updateDept(sysDept, SecurityContextHolder.getAuthentication()));
     }
 
     /**
      * 删除区域
      */
     @PostMapping(value = "delete")
-    public ResultBean<SysDept> delete(@RequestBody @Validated(DeleteGroup.class) SysDept sysDept) throws ExpressException {
-        return new ResultBean<>(sysDeptService.deleteDept(sysDept));
+    public ResultBean<Integer> delete(@RequestBody @Validated(DeleteGroup.class) SysDept sysDept) throws ExpressException {
+        return new ResultBean<>(sysDeptService.deleteDept(sysDept, SecurityContextHolder.getAuthentication()));
     }
 }

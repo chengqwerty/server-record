@@ -2,8 +2,10 @@ package som.make.mock.server.web.system.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.Comment;
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Where;
 import org.hibernate.validator.constraints.Length;
 import som.make.mock.server.common.validation.AddGroup;
 import som.make.mock.server.extend.SnowflakeIdGeneratorImpl;
@@ -13,6 +15,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "sys_menu")
+@Where(clause = "delete_flag = 0")
 public class SysMenu implements EntityInfoSetter {
 
     @Id
@@ -21,54 +24,70 @@ public class SysMenu implements EntityInfoSetter {
     @GenericGenerator(name = "snowflakeIdGenerator", type = SnowflakeIdGeneratorImpl.class)
     @Comment("菜单id")
     private String menuId;
+
     @Column(length = 64, unique = true)
     @Comment("菜单编码")
     @NotNull(groups = {AddGroup.class})
     @Length(min = 4)
     private String menuCode;
+
     @Column(length = 64)
     @Comment("菜单名称")
     @NotNull(groups = {AddGroup.class})
     private String menuName;
+
     @Column(length = 256)
     @Comment("菜单描述")
     private String menuDescription;
+
     @Column()
     @Comment("菜单类型，0：菜单，1：目录")
     @NotNull(groups = {AddGroup.class})
     private Integer menuType;
+
     @Column()
     @Comment("菜单level")
     private Integer menuLevel;
+
     @Column()
     @Comment("菜单排序")
     private Integer menuSort;
+
     @Column(length = 256)
     @Comment("菜单地址")
     private String menuLink;
+
     @Column(length = 64)
     @Comment("菜单图标")
     private String menuIcon;
+
     @Column(length = 64)
     @Comment("parentId")
     @NotNull(groups = {AddGroup.class})
     private String parentId;
+
     @Column()
     @Comment("是否可见")
     @NotNull(groups = {AddGroup.class})
     private Integer menuVisible;
+
     @Column()
+    @ColumnDefault("0")
     @Comment("删除标记")
-    public Boolean delFlag = false;
+    public Integer deleteFlag = 0;
+
     @Column()
     @Comment("创建时间")
     public LocalDateTime createTime;
+
     @Column(length = 64)
     @Comment("创建人")
     public String createUser;
+
     @Column()
     @Comment("修改时间")
     public LocalDateTime updateTime;
+
     @Column(length = 64)
     @Comment("修改人")
     public String updateUser;
@@ -161,12 +180,12 @@ public class SysMenu implements EntityInfoSetter {
         this.menuVisible = menuVisible;
     }
 
-    public Boolean getDelFlag() {
-        return delFlag;
+    public Integer getDeleteFlag() {
+        return deleteFlag;
     }
 
-    public void setDelFlag(Boolean delFlag) {
-        this.delFlag = delFlag;
+    public void setDeleteFlag(Integer deleteFlag) {
+        this.deleteFlag = deleteFlag;
     }
 
     public LocalDateTime getCreateTime() {

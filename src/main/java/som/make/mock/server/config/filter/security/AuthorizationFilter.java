@@ -35,9 +35,7 @@ public class AuthorizationFilter implements Filter {
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         HttpServletRequest httpServletRequest = (HttpServletRequest) servletRequest;
         Authentication<SysUser, SysRole> authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication != null && authentication.getPrincipal().getLoginName().equals("admin")) {
-            // admin 作为超级管理员跳过鉴权这一步。
-        } else if (!httpServletRequest.getMethod().equals(HttpMethod.OPTIONS.name())) {
+        if (!authentication.getPrincipal().getLoginName().equals("admin")) {
             List<HttpSecurity.AuthorizedUrl> authorizedUrlList = httpSecurity.getAuthorizedUrlList();
             String servletPath = httpServletRequest.getServletPath();
             WebSecurityExpression webSecurityExpression = new WebSecurityExpression(authentication);
@@ -55,7 +53,7 @@ public class AuthorizationFilter implements Filter {
             }
             if (!canAccess) {
                 // 如果是没有登录，执行onAuthenticationFailure，如果是没有权限，执行onAuthorizationFailure
-                if (SecurityContextHolder.getContext().getAuthentication() == null) {
+                if ("noLoginUser".equals(SecurityContextHolder.getContext().getAuthentication().getToken())) {
                     httpSecurity.getFailureHandler().onAuthenticationFailure((HttpServletRequest) servletRequest, (HttpServletResponse) servletResponse);
                 } else {
                     httpSecurity.getFailureHandler().onAuthorizationFailure((HttpServletRequest) servletRequest, (HttpServletResponse) servletResponse);

@@ -42,7 +42,7 @@ public class AuthencationFilter implements Filter {
         HttpServletRequest httpServletRequest = (HttpServletRequest) servletRequest;
         String token = httpServletRequest.getHeader("Authorization-Token");
         if (token != null) {
-            TokenDetails tokenDetail = tokenCache.getToken(token);
+            TokenDetails tokenDetail = tokenCache.get(token);
             if (tokenDetail != null) {
                 Authentication<SysUser, SysRole> authentication = tokenDetail.getAuthentication();
                 SecurityContextHolder.getContext().setAuthentication(authentication);

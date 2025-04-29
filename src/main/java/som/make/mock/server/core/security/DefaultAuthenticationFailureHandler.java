@@ -20,7 +20,9 @@ public class DefaultAuthenticationFailureHandler implements AuthenticationFailur
         response.setStatus(HttpStatus.UNAUTHORIZED.value());
         Map<String, Object> data = new HashMap<>();
         data.put("error", "用户没有登录");
-        response.getOutputStream().write(objectMapper.writeValueAsString(data).getBytes(StandardCharsets.ISO_8859_1));
+        // 设置响应的字符编码为 UTF-8
+        response.setCharacterEncoding("UTF-8");
+        response.getOutputStream().write(objectMapper.writeValueAsString(data).getBytes(StandardCharsets.UTF_8));
         // response.getOutputStream().close();
     }
 
@@ -29,7 +31,8 @@ public class DefaultAuthenticationFailureHandler implements AuthenticationFailur
         response.setStatus(HttpStatus.FORBIDDEN.value());
         Map<String, Object> data = new HashMap<>();
         data.put("error", "用户没有权限");
-        response.getOutputStream().write(objectMapper.writeValueAsString(data).getBytes(StandardCharsets.ISO_8859_1));
+        response.setCharacterEncoding("UTF-8");
+        response.getOutputStream().write(objectMapper.writeValueAsString(data).getBytes(StandardCharsets.UTF_8));
         // response.getOutputStream().close();
     }
 }

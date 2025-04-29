@@ -8,10 +8,13 @@ public interface EntityInfoSetter {
 
     String getCreateUser();
     void setCreateUser(String createUser);
+
     LocalDateTime getCreateTime();
     void setCreateTime(LocalDateTime createTime);
+
     String getUpdateUser();
     void setUpdateUser(String updateUser);
+
     LocalDateTime getUpdateTime();
     void setUpdateTime(LocalDateTime updateTime);
 

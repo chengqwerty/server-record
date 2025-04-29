@@ -5,7 +5,7 @@ import org.springframework.transaction.annotation.Transactional;
 import som.make.mock.server.common.Constants;
 import som.make.mock.server.core.security.SecurityContextHolder;
 import som.make.mock.server.web.system.entity.SysArea;
-import som.make.mock.server.web.system.dao.SysAreaDao;
+import som.make.mock.server.web.system.repository.SysAreaDao;
 import som.make.mock.server.common.express.ExpressCode;
 import som.make.mock.server.common.express.ExpressException;
 

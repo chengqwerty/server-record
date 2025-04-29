@@ -1,9 +1,12 @@
 package som.make.mock.server.web.system.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.persistence.ForeignKey;
 import jakarta.persistence.Table;
 import org.hibernate.annotations.*;
+import som.make.mock.server.extend.SnowflakeIdGeneratorImpl;
+import som.make.mock.server.web.common.EntityInfoSetter;
 
 import java.time.LocalDateTime;
 import java.util.Set;
@@ -11,11 +14,12 @@ import java.util.Set;
 @Entity
 @Table(name = "sys_dept")
 @Where(clause = "delete_flag = 0")
-public class SysDept {
+public class SysDept implements EntityInfoSetter {
 
     @Id
     @Column(name = "dept_id", length = 64)
-    @UuidGenerator(style = UuidGenerator.Style.TIME)
+    @GeneratedValue(generator = "snowflakeIdGenerator")
+    @GenericGenerator(name = "snowflakeIdGenerator", type = SnowflakeIdGeneratorImpl.class)
     @Comment("部门id")
     private String deptId;
 
@@ -38,7 +42,7 @@ public class SysDept {
     @Comment("部门详细信息，备注。")
     private String deptDescription;
 
-    @Column(name = "delete_flag", nullable = false)
+    @Column(name = "delete_flag", nullable = true)
     @Comment("删除标记")
     @ColumnDefault("0")
     private Integer deleteFlag = 0;
@@ -49,7 +53,7 @@ public class SysDept {
 
     @Column(length = 64)
     @Comment("创建人")
-    private String creteUser;
+    private String createUser;
 
     @Column()
     @Comment("修改时间")
@@ -62,6 +66,7 @@ public class SysDept {
     @OneToMany(fetch = FetchType.LAZY)
     @JoinColumn(name = "dept_id", referencedColumnName = "parent_id", foreignKey = @ForeignKey(name = "none", value =
             ConstraintMode.NO_CONSTRAINT), insertable = false, updatable = false)
+    @JsonIgnore
     private Set<SysDept> children;
 
     public String getDeptId() {
@@ -128,12 +133,14 @@ public class SysDept {
         this.createTime = createTime;
     }
 
-    public String getCreteUser() {
-        return creteUser;
+    @Override
+    public String getCreateUser() {
+        return createUser;
     }
 
-    public void setCreteUser(String creteUser) {
-        this.creteUser = creteUser;
+    @Override
+    public void setCreateUser(String createUser) {
+        this.createUser = createUser;
     }
 
     public LocalDateTime getUpdateTime() {

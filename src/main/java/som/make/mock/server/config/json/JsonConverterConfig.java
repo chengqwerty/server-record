@@ -19,4 +19,5 @@ public class JsonConverterConfig implements InitializingBean {
         System.out.println("ObjectMapper Add Hibernate6Module!");
         mappingJackson2HttpMessageConverter.getObjectMapper().registerModule(new Hibernate6Module());
     }
+
 }

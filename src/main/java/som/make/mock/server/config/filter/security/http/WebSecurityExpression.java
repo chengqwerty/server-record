@@ -6,9 +6,6 @@ import som.make.mock.server.core.security.Authentication;
 import som.make.mock.server.web.system.entity.SysRole;
 import som.make.mock.server.web.system.entity.SysUser;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-
 public class WebSecurityExpression {
 
     private final StandardEvaluationContext standardEvaluationContext = new StandardEvaluationContext();

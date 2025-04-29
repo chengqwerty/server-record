@@ -11,13 +11,18 @@ public class RedisTokenCache implements TokenCache {
     }
 
     @Override
-    public void putToken(String token, TokenDetails tokenDetails) {
+    public void save(String token, TokenDetails tokenDetails) {
         redisTemplate.opsForValue().set(token, tokenDetails);
     }
 
     @Override
-    public TokenDetails getToken(String token) {
+    public TokenDetails get(String token) {
         return (TokenDetails) redisTemplate.opsForValue().get(token);
+    }
+
+    @Override
+    public void remove(String token) {
+        redisTemplate.delete(token);
     }
 
 }
